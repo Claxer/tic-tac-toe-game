@@ -1,14 +1,14 @@
 # Tic Tac Toe
 
-A beginner-friendly **Tic Tac Toe game built with Python** that runs in the terminal. The game supports two players, player names, score tracking, replayable matches, input validation, game rules, and a simple main menu.
+A beginner-friendly **Tic Tac Toe game built with Python** that runs in the terminal. The game supports Player vs Player and Player vs Computer gameplay, customizable player names, computer difficulty levels, score tracking, game statistics, replayable matches, input validation, rules, and a structured main menu.
 
-This project was created as a learning project to practice Python programming fundamentals while building a complete and interactive command-line game.
+This project was created as a learning project to practice Python programming fundamentals while gradually developing a more complete and interactive command-line game.
 
 ---
 
 ## About the Project
 
-**Tic Tac Toe** is a classic two-player strategy game played on a 3×3 board.
+**Tic Tac Toe** is a classic strategy game played on a 3×3 board.
 
 Each player is assigned a symbol:
 
@@ -25,17 +25,17 @@ A player can win by creating a line:
 
 If all nine spaces are filled without either player winning, the game ends in a draw.
 
-The improved version expands the original basic game by adding a **menu system, player names, score tracking, replay functionality, rules, better input validation, and a more organized program structure**.
+The expanded version of this project builds upon the original two-player game by adding **Player vs Computer mode, difficulty levels, first-player selection, statistics, score management, improved game flow, and additional game options**.
 
 ---
 
-## Current Version
+# Current Version
 
-**Version:** 2.0
+**Version:** 3.0
 
 The project has evolved from a basic two-player terminal game into a more complete and structured Python application.
 
-### Version 1.0
+## Version 1.0
 
 The original version included:
 
@@ -46,9 +46,9 @@ The original version included:
 * Draw detection
 * Basic position validation
 
-### Version 2.0
+## Version 2.0
 
-The improved version now includes:
+The improved version added:
 
 * Main menu
 * Player names
@@ -64,37 +64,77 @@ The improved version now includes:
 * Modular functions
 * Improved game flow
 
+## Version 3.0
+
+The expanded version now includes:
+
+* Player vs Player mode
+* Player vs Computer mode
+* Easy computer difficulty
+* Medium computer difficulty
+* Hard computer difficulty
+* Computer move generation
+* Computer win detection
+* Computer blocking logic
+* First-player selection
+* Random first-player selection
+* Game statistics
+* Total games played
+* Total moves
+* Average moves per game
+* Win percentages
+* Score reset option
+* Improved main menu
+* Separate game mode selection
+* Separate difficulty selection
+* Better computer turn handling
+* Computer thinking message
+* Improved game organization
+
 ---
 
-## Features
+# Features
 
-### Main Menu
+## Main Menu
 
-The game now includes a main menu that allows players to choose what they want to do.
+The game includes a main menu that allows players to access different parts of the application.
 
 ```text
-=============================================
-                MAIN MENU
-=============================================
+=======================================================
+                    MAIN MENU
+=======================================================
 1. Start Game
 2. View Rules
-3. View Scores
-4. Change Player Names
-5. Exit
-=============================================
+3. How To Play
+4. View Scores
+5. View Statistics
+6. Change Player Names
+7. Reset Scores
+8. Exit
+=======================================================
 ```
 
-Players can start a game, view the rules, check the current score, change player names, or exit the program.
+Players can start a game, read the rules, learn how to play, view scores, view statistics, change player names, reset scores, or exit the program.
 
 ---
 
-### Two-Player Gameplay
+## Game Modes
 
-The game supports two players playing on the same computer.
+The game now supports two different ways to play.
 
-Player X always starts the game, followed by Player O.
+```text
+=======================================================
+                    GAME MODE
+=======================================================
+1. Player vs Player
+2. Player vs Computer
+3. Back
+=======================================================
+```
 
-Example:
+### Player vs Player
+
+Two human players play against each other on the same computer.
 
 ```text
 Player X
@@ -106,13 +146,101 @@ Player X
 Player O
 ```
 
-The program automatically switches between players after each valid move.
+The game automatically switches turns after each valid move.
+
+### Player vs Computer
+
+One human player plays against the computer.
+
+The computer controls Player O while the human player controls Player X.
+
+The computer automatically chooses an available position based on the selected difficulty.
 
 ---
 
-### Custom Player Names
+# Computer Difficulty
 
-Players can enter their own names before starting the game.
+When Player vs Computer mode is selected, the player can choose a difficulty level.
+
+```text
+=======================================================
+              COMPUTER DIFFICULTY
+=======================================================
+1. Easy
+2. Medium
+3. Hard
+=======================================================
+```
+
+## Easy
+
+The computer selects an available position randomly.
+
+This difficulty is useful for beginners who are learning how the game works.
+
+The computer does not intentionally try to win or block the player.
+
+---
+
+## Medium
+
+The Medium computer uses basic strategy.
+
+It will:
+
+1. Try to win if it has a winning move.
+2. Try to block the player if they are about to win.
+3. Prefer the center position.
+4. Prefer available corners.
+5. Choose another available position if necessary.
+
+This makes the computer more challenging than Easy mode.
+
+---
+
+## Hard
+
+The Hard difficulty uses the same strategic priorities but makes more deliberate choices when selecting its moves.
+
+The computer:
+
+1. Looks for a winning move.
+2. Looks for a move that blocks the player.
+3. Attempts to take the center.
+4. Attempts to take a corner.
+5. Selects another available position when necessary.
+
+The current Hard mode is **not a full Minimax AI**. A future version can improve this further by implementing the Minimax algorithm.
+
+---
+
+# First Player Selection
+
+Before each game, players can choose who starts.
+
+```text
+=======================================================
+                  FIRST PLAYER
+=======================================================
+1. Player X
+2. Player O
+3. Random
+=======================================================
+```
+
+Players can:
+
+* Let Player X start
+* Let Player O start
+* Randomly select the first player
+
+Random first-player selection makes repeated matches less predictable.
+
+---
+
+# Custom Player Names
+
+Players can enter their own names before playing.
 
 Example:
 
@@ -124,12 +252,11 @@ Player O name: Alex
 The game will then display:
 
 ```text
-Jose (X) - choose a position:
+Jose (X)
+Alex (O)
 ```
 
-instead of only displaying `Player X`.
-
-If a player does not enter a name, the program automatically uses:
+If no name is entered, the program automatically uses:
 
 ```text
 Player X
@@ -138,41 +265,47 @@ Player O
 
 ---
 
-### 3×3 Game Board
+# 3×3 Game Board
 
 The game uses a standard 3×3 Tic Tac Toe board.
 
 ```text
-       X   |   O   |
-     -------+-------+-------
-           |   X   |
-     -------+-------+-------
-           |       |   O
+             X   |   O   |
+           -------+-------+-------
+                 |   X   |
+           -------+-------+-------
+                 |       |   O
 ```
 
-The board contains nine available positions.
+The board contains nine positions.
 
 ---
 
-### Position Guide
+# Position Guide
 
-Players can view the position guide before starting.
+Players can use the position guide to understand which number corresponds to each space.
 
 ```text
-       1   |   2   |   3
-     -------+-------+-------
-       4   |   5   |   6
-     -------+-------+-------
-       7   |   8   |   9
+               1   |   2   |   3
+             -------+-------+-------
+               4   |   5   |   6
+             -------+-------+-------
+               7   |   8   |   9
 ```
 
-The player simply enters the number of the position they want to use.
+For example:
+
+```text
+> 5
+```
+
+places the player's symbol in the center.
 
 ---
 
-### Input Validation
+# Input Validation
 
-The improved version provides better protection against invalid input.
+The game checks player input before accepting a move.
 
 For example, if a player enters:
 
@@ -180,40 +313,45 @@ For example, if a player enters:
 abc
 ```
 
-the program responds with:
+The program responds:
 
 ```text
 Invalid input.
 Please enter a number from 1 to 9.
 ```
 
-The program also checks numbers outside the valid range.
+The program also rejects numbers outside the valid range.
 
-For example:
+Example:
 
 ```text
-15
+> 15
 ```
 
-will not be accepted.
+Output:
+
+```text
+Invalid position.
+Please choose a number from 1 to 9.
+```
 
 ---
 
-### Occupied Position Protection
+# Occupied Position Protection
 
-Players cannot overwrite another player's move.
+Players cannot overwrite an existing move.
 
 For example:
 
 ```text
- X |   |
----+---+---
-   | O |
----+---+---
-   |   |
+             X   |       |
+           -------+-------+-------
+                 |   O   |
+           -------+-------+-------
+                 |       |
 ```
 
-If a player tries to select position `5` again, the program responds:
+If a player attempts to select position `5` again, the program responds:
 
 ```text
 That position is already taken.
@@ -222,9 +360,9 @@ Please choose another position.
 
 ---
 
-### Win Detection
+# Win Detection
 
-The game automatically checks for a winner after every valid move.
+The program checks for a winner after every valid move.
 
 There are eight possible winning combinations:
 
@@ -232,73 +370,159 @@ There are eight possible winning combinations:
 * 3 vertical lines
 * 2 diagonal lines
 
-For example:
+Example:
 
 ```text
- X | X | X
----+---+---
- O |   | O
----+---+---
-   |   |
+             X   |   X   |   X
+           -------+-------+-------
+             O   |       |   O
+           -------+-------+-------
+                 |       |
 ```
 
-Player X wins because they have three X symbols horizontally.
+Player X wins because three X symbols are placed horizontally.
 
 ---
 
-### Draw Detection
+# Draw Detection
 
-If all nine positions are filled and neither player has won, the game recognizes the result as a draw.
+If all nine positions are filled and neither player wins, the game recognizes the result as a draw.
 
 Example:
 
 ```text
- X | O | X
----+---+---
- X | O | O
----+---+---
- O | X | X
+             X   |   O   |   X
+           -------+-------+-------
+             X   |   O   |   O
+           -------+-------+-------
+             O   |   X   |   X
 ```
 
 The program displays:
 
 ```text
-=============================================
-              IT'S A DRAW!
-=============================================
+=======================================================
+                 IT'S A DRAW!
+=======================================================
 ```
 
 ---
 
-### Score Tracking
+# Score Tracking
 
-The improved version keeps track of scores throughout the current program session.
+The game keeps track of scores throughout the current program session.
 
 The scoreboard tracks:
 
 * Player X wins
 * Player O wins
 * Draws
+* Total games played
 
 Example:
 
 ```text
-=============================================
-                    SCORE
-=============================================
-Jose (X):  3
-Alex (O):  2
-Draws:     1
-=============================================
+=======================================================
+                    SCOREBOARD
+=======================================================
+Jose (X): 3 wins
+Alex (O): 2 wins
+Draws:    1
+Games Played: 6
+=======================================================
 ```
 
-The score is updated automatically after every completed game.
+The score is automatically updated after every completed game.
 
 ---
 
-### Play Again
+# Win Percentage
 
-After finishing a game, players can choose whether they want to play another match.
+The game also calculates the percentage of games won or drawn.
+
+Example:
+
+```text
+Win Statistics
+-----------------------------------
+Jose: 50.0%
+Alex: 33.3%
+Draws: 16.7%
+```
+
+The percentages are calculated based on the total number of completed games.
+
+---
+
+# Game Statistics
+
+The game includes a separate statistics section.
+
+It displays:
+
+* Total games
+* Player X wins
+* Player O wins
+* Draws
+* Total moves
+* Average moves per game
+
+Example:
+
+```text
+=======================================================
+                GAME STATISTICS
+=======================================================
+Total Games:       10
+Jose Wins:         5
+Alex Wins:         3
+Draws:             2
+Total Moves:       72
+Average Moves:     7.20
+=======================================================
+```
+
+This provides a better overview of the player's performance over multiple matches.
+
+---
+
+# Move Tracking
+
+The program keeps track of the number of moves made during each game.
+
+For example:
+
+```text
+Move 1
+Move 2
+Move 3
+Move 4
+...
+```
+
+The total number of moves is also used when calculating the average number of moves per game.
+
+---
+
+# Computer Thinking
+
+When playing against the computer, the game displays a short thinking message before the computer makes its move.
+
+Example:
+
+```text
+Computer is thinking...
+
+Computer chose position 5.
+```
+
+This makes the computer mode feel more like an actual game.
+
+---
+
+# Play Again
+
+After a completed game, players can choose whether they want to play another match.
 
 ```text
 Would you like to play again?
@@ -306,49 +530,93 @@ Y - Yes
 N - No
 ```
 
-Choosing `Y` starts another game using the same player names and score.
+Choosing `Y` starts another game without restarting the Python program.
 
-This means players do not have to restart the Python program after every match.
+The scores remain available throughout the current session.
 
 ---
 
-### Change Player Names
+# Random Rematches
+
+When players choose to continue playing, the game can randomly determine who starts the next match.
+
+This prevents the same player from always starting every game.
+
+---
+
+# Change Player Names
 
 Players can change their names from the main menu.
 
 ```text
-4. Change Player Names
+6. Change Player Names
 ```
 
 This allows the same program session to be used by different players.
 
 ---
 
-### View Rules
+# Reset Scores
 
-The main menu includes a rules section that explains how Tic Tac Toe works.
+The game includes an option to reset the current scores.
 
 ```text
-1. Tic Tac Toe is played by two players.
-
-2. Player X goes first.
-
-3. Players take turns selecting an empty
-   position on the board.
-
-4. The first player to get three symbols
-   in a row wins.
-
-5. A player can win horizontally, vertically,
-   or diagonally.
-
-6. If all nine spaces are filled and nobody
-   wins, the game ends in a draw.
+7. Reset Scores
 ```
+
+Before resetting, the program asks for confirmation:
+
+```text
+Are you sure you want to reset scores? (Y/N):
+```
+
+If the player enters `Y`, the scores and move statistics are reset.
+
+If the player enters `N`, the reset is cancelled.
 
 ---
 
-### Quit During a Game
+# View Rules
+
+The Rules section explains the basic rules of Tic Tac Toe.
+
+The rules include:
+
+1. Tic Tac Toe is played on a 3×3 board.
+2. Players take turns selecting empty spaces.
+3. The objective is to get three symbols in a row.
+4. A player can win horizontally, vertically, or diagonally.
+5. If all nine spaces are filled without a winner, the game ends in a draw.
+
+---
+
+# How To Play
+
+The game also includes a dedicated **How To Play** section.
+
+It explains the numbered board:
+
+```text
+              1   |   2   |   3
+            -------+-------+-------
+              4   |   5   |   6
+            -------+-------+-------
+              7   |   8   |   9
+```
+
+To make a move, enter the number of the position you want.
+
+Example:
+
+```text
+> 5
+```
+
+The symbol is placed in the center.
+
+---
+
+# Quit During a Game
 
 Players can enter:
 
@@ -356,15 +624,15 @@ Players can enter:
 Q
 ```
 
-during their turn to leave the current game and return to the main menu.
+during their turn to leave the current game.
 
-This gives players an easy way to stop a match without closing the entire application.
+The program returns to the main menu instead of completely closing.
 
 ---
 
 # How the Game Works
 
-The improved game follows a structured process:
+The expanded game follows this general process:
 
 ```text
 Start Program
@@ -375,54 +643,108 @@ Enter Player Names
       ↓
 Display Main Menu
       ↓
-Choose an Option
+Choose Start Game
       ↓
-Start Game
+Select Game Mode
       ↓
-Create Empty Board
-      ↓
-Display Board
-      ↓
-Ask for Player Move
-      ↓
-Validate Move
-      ↓
-Place X or O
-      ↓
-Check Winner
-      ↓
-Check Draw
-      ↓
-Switch Player
-      ↓
-Repeat
-      ↓
-Game Ends
-      ↓
-Update Score
-      ↓
-Play Again?
-      ↓
-Return to Menu
++-----------------------+
+|                       |
+PvP                    PvC
+|                       |
+|                 Select Difficulty
+|                       |
++-----------+-----------+
+            ↓
+    Select First Player
+            ↓
+      Create Board
+            ↓
+       Display Board
+            ↓
+       Make a Move
+            ↓
+      Validate Move
+            ↓
+       Place Symbol
+            ↓
+      Check Winner
+            ↓
+       Check Draw
+            ↓
+      Game Finished?
+        /        \
+      No          Yes
+      |            |
+ Switch Turn    Update Score
+      |            |
+      +------→  Play Again?
+                  /    \
+                Yes     No
+                 |       |
+              New Game   Menu
 ```
 
-This structure makes the program easier to understand and modify.
+---
+
+# Computer Decision System
+
+The computer uses different decision strategies depending on the difficulty.
+
+## Easy
+
+```text
+Get Available Spaces
+        ↓
+Choose Random Space
+        ↓
+Make Move
+```
+
+## Medium
+
+```text
+Check Winning Move
+        ↓
+Check Blocking Move
+        ↓
+Take Center
+        ↓
+Take Corner
+        ↓
+Choose Available Space
+```
+
+## Hard
+
+```text
+Check Winning Move
+        ↓
+Check Blocking Move
+        ↓
+Take Center
+        ↓
+Take Corner
+        ↓
+Choose Available Space
+```
+
+This system allows the project to demonstrate basic decision-making and game logic without requiring advanced artificial intelligence.
 
 ---
 
 # Project Structure
 
-The current project is intentionally kept simple because it is a beginner Python project.
+The project is intentionally kept simple because it is a beginner Python project.
 
 ```text
 Tic-Tac-Toe-game/
 │
-├── game.py
+├── tic_tac_toe.py
 │
 └── README.md
 ```
 
-### `tic_tac_toe.py`
+## `tic_tac_toe.py`
 
 Contains the complete Tic Tac Toe application.
 
@@ -432,21 +754,32 @@ The file includes:
 * Board creation
 * Board display
 * Player name input
+* Game mode selection
+* Difficulty selection
+* First-player selection
 * Move validation
 * Player movement
+* Computer movement
 * Win detection
 * Draw detection
 * Score tracking
+* Statistics
+* Move tracking
 * Replay functionality
+* Score reset
 * Rules
+* How-to-play instructions
 * Game loop
 
-### `README.md`
+## `README.md`
 
 Contains the documentation for the project, including:
 
 * Project information
 * Features
+* Game modes
+* Computer difficulty
+* How the game works
 * Installation
 * How to play
 * Game rules
@@ -458,9 +791,9 @@ Contains the documentation for the project, including:
 
 # Main Functions
 
-The improved version separates different responsibilities into individual functions.
+The expanded version separates different responsibilities into individual functions.
 
-This makes the code easier to read and maintain.
+This makes the code easier to read, understand, maintain, and expand.
 
 ## `display_title()`
 
@@ -468,6 +801,17 @@ Displays the title when the program starts.
 
 ```python
 def display_title():
+```
+
+---
+
+## `create_board()`
+
+Creates a new empty board.
+
+```python
+def create_board():
+    return [" " for _ in range(9)]
 ```
 
 ---
@@ -492,17 +836,6 @@ def display_position_guide():
 
 ---
 
-## `create_board()`
-
-Creates a new empty board.
-
-```python
-def create_board():
-    return [" " for _ in range(9)]
-```
-
----
-
 ## `get_player_names()`
 
 Allows players to enter their names.
@@ -517,17 +850,36 @@ The function also provides default names if the user leaves the input empty.
 
 ## `display_scores()`
 
-Displays the current game scores.
+Displays the current scoreboard.
 
 ```python
 def display_scores(player_x, player_o, scores):
 ```
 
+It also calculates the win percentage of each player and the percentage of draws.
+
+---
+
+## `display_statistics()`
+
+Displays detailed game statistics.
+
+```python
+def display_statistics(
+    player_x,
+    player_o,
+    scores,
+    total_moves
+):
+```
+
+It calculates the average number of moves per completed game.
+
 ---
 
 ## `is_valid_move()`
 
-Checks whether a player's selected position is valid and available.
+Checks whether a selected position is valid and available.
 
 ```python
 def is_valid_move(board, move):
@@ -537,6 +889,18 @@ It checks:
 
 * Whether the position is between 1 and 9
 * Whether the selected space is empty
+
+---
+
+## `get_available_moves()`
+
+Returns all currently available board positions.
+
+```python
+def get_available_moves(board):
+```
+
+This function is especially useful for the computer player.
 
 ---
 
@@ -554,7 +918,7 @@ It also allows the player to enter `Q` to quit the current game.
 
 ## `make_move()`
 
-Places the player's symbol on the board.
+Places a player's symbol on the board.
 
 ```python
 def make_move(board, move, player_symbol):
@@ -562,15 +926,128 @@ def make_move(board, move, player_symbol):
 
 ---
 
+## `get_winning_combinations()`
+
+Returns all possible winning combinations.
+
+```python
+def get_winning_combinations():
+```
+
+---
+
 ## `check_winner()`
 
-Checks all possible winning combinations.
+Checks whether a player has completed a winning combination.
 
 ```python
 def check_winner(board, player_symbol):
 ```
 
-It returns `True` when the player has won and `False` when they have not.
+It returns `True` if the player wins and `False` otherwise.
+
+---
+
+## `find_winning_move()`
+
+Checks whether a specific symbol can win by making a particular move.
+
+```python
+def find_winning_move(board, symbol):
+```
+
+This function is used by the computer's Medium and Hard strategies.
+
+---
+
+## `easy_computer_move()`
+
+Selects a random available position for the computer.
+
+```python
+def easy_computer_move(board):
+```
+
+---
+
+## `medium_computer_move()`
+
+Uses basic strategy to make a computer move.
+
+```python
+def medium_computer_move(
+    board,
+    computer_symbol,
+    player_symbol
+):
+```
+
+The computer tries to:
+
+1. Win
+2. Block
+3. Take center
+4. Take a corner
+5. Choose another available position
+
+---
+
+## `hard_computer_move()`
+
+Uses a more strategic computer decision process.
+
+```python
+def hard_computer_move(
+    board,
+    computer_symbol,
+    player_symbol
+):
+```
+
+---
+
+## `get_computer_move()`
+
+Selects the appropriate computer strategy based on the chosen difficulty.
+
+```python
+def get_computer_move(
+    board,
+    difficulty,
+    computer_symbol,
+    player_symbol
+):
+```
+
+---
+
+## `select_game_mode()`
+
+Allows the player to choose between Player vs Player and Player vs Computer.
+
+```python
+def select_game_mode():
+```
+
+---
+
+## `select_difficulty()`
+
+Allows the player to choose the computer difficulty.
+
+```python
+def select_difficulty():
+```
+
+---
+
+## `select_first_player()`
+
+Allows the player to choose who starts the game.
+
+```python
+def select_first_player():
+```
 
 ---
 
@@ -586,7 +1063,7 @@ def is_board_full(board):
 
 ## `display_winner()`
 
-Displays the winner message after a successful game.
+Displays the winner message.
 
 ```python
 def display_winner(player_name, player_symbol):
@@ -596,10 +1073,20 @@ def display_winner(player_name, player_symbol):
 
 ## `display_draw()`
 
-Displays the draw message when nobody wins.
+Displays the draw message.
 
 ```python
 def display_draw():
+```
+
+---
+
+## `display_computer_move()`
+
+Displays the computer's selected move.
+
+```python
+def display_computer_move(move):
 ```
 
 ---
@@ -609,23 +1096,33 @@ def display_draw():
 Controls the main gameplay.
 
 ```python
-def play_game(player_x, player_o):
+def play_game(
+    player_x,
+    player_o,
+    mode,
+    difficulty=None,
+    first_player="X"
+):
 ```
 
 This function manages:
 
 * Board creation
 * Player turns
+* Computer turns
 * Player moves
+* Computer moves
 * Win checking
 * Draw checking
 * Turn switching
+* Move counting
+* Game completion
 
 ---
 
 ## `play_again()`
 
-Asks the players whether they want to start another game.
+Asks players whether they want to start another game.
 
 ```python
 def play_again():
@@ -633,12 +1130,12 @@ def play_again():
 
 ---
 
-## `display_menu()`
+## `reset_scores()`
 
-Displays the main menu.
+Resets the current scoreboard.
 
 ```python
-def display_menu():
+def reset_scores(scores):
 ```
 
 ---
@@ -653,15 +1150,35 @@ def display_rules():
 
 ---
 
+## `display_how_to_play()`
+
+Displays instructions for new players.
+
+```python
+def display_how_to_play():
+```
+
+---
+
+## `display_menu()`
+
+Displays the main menu.
+
+```python
+def display_menu():
+```
+
+---
+
 ## `main()`
 
-The `main()` function controls the overall application.
+Controls the entire application.
 
 ```python
 def main():
 ```
 
-It connects the different functions together and controls the main menu.
+It connects the different functions together and manages the main program loop.
 
 ---
 
@@ -685,7 +1202,7 @@ Internally, the board looks like:
  6 | 7 | 8
 ```
 
-However, players interact with it using positions `1–9`:
+However, players interact with the board using positions `1–9`:
 
 ```text
  1 | 2 | 3
@@ -725,7 +1242,7 @@ board[4]
 
 # Winning Combinations
 
-The program stores the possible winning combinations in a list.
+The program stores the possible winning combinations in a list of tuples.
 
 ```python
 winning_combinations = [
@@ -758,7 +1275,7 @@ Diagonal:
 (2, 4, 6)
 ```
 
-The program checks each combination after a player makes a move.
+The program checks these combinations after every move.
 
 ---
 
@@ -775,9 +1292,13 @@ This project uses:
 * Tuples
 * String Methods
 * User Input
+* Random Module
+* Time Module
+* Boolean Values
 * Basic Game Logic
+* Modular Programming
 
-No external libraries or packages are required.
+No external libraries or third-party packages are required.
 
 ---
 
@@ -790,6 +1311,8 @@ You only need:
 * A code editor
 
 The project does not require any third-party dependencies.
+
+The `random` and `time` modules used by the project are included with Python.
 
 ---
 
@@ -843,13 +1366,13 @@ Run:
 python tic_tac_toe.py
 ```
 
-The application will start in the terminal.
+The game will start in the terminal.
 
 ---
 
 # How to Play
 
-### Step 1 — Enter Player Names
+## Step 1 — Enter Player Names
 
 When the program starts:
 
@@ -858,27 +1381,28 @@ Player X name:
 Player O name:
 ```
 
-Enter the names of both players.
+Enter the names of the players.
 
 ---
 
-### Step 2 — Open the Main Menu
+## Step 2 — Open the Main Menu
 
 You will see:
 
 ```text
 1. Start Game
 2. View Rules
-3. View Scores
-4. Change Player Names
-5. Exit
+3. How To Play
+4. View Scores
+5. View Statistics
+6. Change Player Names
+7. Reset Scores
+8. Exit
 ```
-
-Choose the desired option.
 
 ---
 
-### Step 3 — Start the Game
+## Step 3 — Start a Game
 
 Choose:
 
@@ -886,7 +1410,43 @@ Choose:
 1
 ```
 
-The board position guide will appear.
+The game will ask you to select a game mode.
+
+```text
+1. Player vs Player
+2. Player vs Computer
+3. Back
+```
+
+---
+
+## Step 4 — Select Difficulty
+
+If Player vs Computer is selected, choose:
+
+```text
+1. Easy
+2. Medium
+3. Hard
+```
+
+---
+
+## Step 5 — Select the First Player
+
+Choose:
+
+```text
+1. Player X
+2. Player O
+3. Random
+```
+
+---
+
+## Step 6 — Make a Move
+
+The position guide will appear:
 
 ```text
 1 | 2 | 3
@@ -896,104 +1456,140 @@ The board position guide will appear.
 7 | 8 | 9
 ```
 
----
-
-### Step 4 — Make a Move
-
-The current player enters a number from `1` to `9`.
+Enter a number from `1` to `9`.
 
 Example:
 
 ```text
-Jose (X) - choose a position (1-9):
+Jose (X)
+Choose a position from 1-9
+
 > 5
 ```
 
-The X symbol is placed in position 5.
+The X symbol will be placed in position 5.
 
 ---
 
-### Step 5 — Continue Playing
+## Step 7 — Continue Playing
 
-Players take turns until:
+The game continues until:
 
 * Player X wins
 * Player O wins
+* The computer wins
 * The game ends in a draw
 * A player quits
 
 ---
 
-### Step 6 — Check the Score
+## Step 8 — View the Result
 
-After a completed game, the scoreboard is updated.
+After the game ends, the program displays the result and updates the scoreboard.
 
 Example:
 
 ```text
-Jose (X): 1
-Alex (O): 0
-Draws:    0
+=======================================================
+                    SCOREBOARD
+=======================================================
+Jose (X): 1 wins
+Computer (O): 0 wins
+Draws: 0
+Games Played: 1
+=======================================================
 ```
-
-Players can then choose whether to play again.
 
 ---
 
 # Example Gameplay
 
 ```text
-=============================================
-              TIC TAC TOE
-=============================================
+=======================================================
+                 TIC TAC TOE
+              Python Edition
+=======================================================
 
+Enter Player Information
+-----------------------------------
 Player X name: Jose
 Player O name: Alex
 
-=============================================
-                MAIN MENU
-=============================================
+=======================================================
+                    MAIN MENU
+=======================================================
 1. Start Game
 2. View Rules
-3. View Scores
-4. Change Player Names
-5. Exit
-=============================================
+3. How To Play
+4. View Scores
+5. View Statistics
+6. Change Player Names
+7. Reset Scores
+8. Exit
+=======================================================
 
 Choose an option: 1
+
+=======================================================
+                    GAME MODE
+=======================================================
+1. Player vs Player
+2. Player vs Computer
+3. Back
+=======================================================
+
+Choose an option: 2
+
+=======================================================
+              COMPUTER DIFFICULTY
+=======================================================
+1. Easy
+2. Medium
+3. Hard
+=======================================================
+
+Choose difficulty: 2
+
+=======================================================
+                  FIRST PLAYER
+=======================================================
+1. Player X
+2. Player O
+3. Random
+=======================================================
+
+Choose an option: 1
+
+Jose will go first.
 ```
 
-The game starts:
+The game then begins.
 
 ```text
-       1   |   2   |   3
-     -------+-------+-------
-       4   |   5   |   6
-     -------+-------+-------
-       7   |   8   |   9
+             POSITION GUIDE
 
-       |   |   
-     -------+-------+-------
-       |   |   
-     -------+-------+-------
-       |   |
+               1   |   2   |   3
+             -------+-------+-------
+               4   |   5   |   6
+             -------+-------+-------
+               7   |   8   |   9
 ```
 
-Jose chooses position 5:
+The player selects a position:
 
 ```text
-Jose (X) - choose a position (1-9):
+Jose (X)
+Choose a position from 1-9
+
 > 5
 ```
 
-The board becomes:
+The computer then makes its move:
 
 ```text
-       |   |   
-     -------+-------+-------
-       | X |
-     -------+-------+-------
-       |   |
+Computer is thinking...
+
+Computer chose position 1.
 ```
 
 The game continues until there is a winner or a draw.
@@ -1002,9 +1598,9 @@ The game continues until there is a winner or a draw.
 
 # Error Handling
 
-The improved version handles several common input problems.
+The game handles several common input problems.
 
-### Invalid Text
+## Invalid Text
 
 Input:
 
@@ -1019,7 +1615,7 @@ Invalid input.
 Please enter a number from 1 to 9.
 ```
 
-### Number Too High
+## Number Too High
 
 Input:
 
@@ -1034,7 +1630,7 @@ Invalid position.
 Please choose a number from 1 to 9.
 ```
 
-### Number Too Low
+## Number Too Low
 
 Input:
 
@@ -1049,16 +1645,16 @@ Invalid position.
 Please choose a number from 1 to 9.
 ```
 
-### Occupied Position
+## Occupied Position
 
-If a player selects a position already containing a symbol:
+If a player selects an occupied position:
 
 ```text
 That position is already taken.
 Please choose another position.
 ```
 
-### Quit
+## Quit
 
 Players can enter:
 
@@ -1093,11 +1689,13 @@ The board is stored using a list:
 board = [" " for _ in range(9)]
 ```
 
+Lists are also used for available moves and winning combinations.
+
 ---
 
 ## Functions
 
-The program is divided into multiple functions.
+The program is divided into many reusable functions.
 
 For example:
 
@@ -1105,19 +1703,23 @@ For example:
 def check_winner(board, player_symbol):
 ```
 
-This makes individual parts of the program easier to understand.
+This makes individual parts of the program easier to understand and maintain.
 
 ---
 
 ## Loops
 
-`while` loops keep the game running.
+`while` loops keep the game running:
 
 ```python
 while True:
 ```
 
-`for` loops are used to check winning combinations.
+`for` loops are used to check winning combinations:
+
+```python
+for first, second, third in winning_combinations:
+```
 
 ---
 
@@ -1132,12 +1734,14 @@ They are used to determine:
 * Whether a player has won
 * Whether the board is full
 * Which player should play next
+* Which computer difficulty is selected
+* Whether the player wants to continue
 
 ---
 
 ## Dictionaries
 
-A dictionary is used to store the game scores.
+A dictionary stores the game scores:
 
 ```python
 scores = {
@@ -1147,13 +1751,11 @@ scores = {
 }
 ```
 
-This allows the program to easily update and display scores.
-
 ---
 
 ## Tuples
 
-Tuples are used to represent winning combinations.
+Tuples are used for winning combinations:
 
 ```python
 (0, 1, 2)
@@ -1161,21 +1763,31 @@ Tuples are used to represent winning combinations.
 
 ---
 
-## String Methods
+## Random Module
 
-The program uses string methods such as:
+The `random` module is used for:
+
+* Easy computer moves
+* Random first-player selection
+* Random corner selection
+
+Example:
 
 ```python
-.strip()
+random.choice(available_moves)
 ```
 
-and:
+---
+
+## Time Module
+
+The `time` module is used to create a short delay when the computer makes a move.
+
+Example:
 
 ```python
-.upper()
+time.sleep(0.7)
 ```
-
-to clean and process user input.
 
 ---
 
@@ -1183,7 +1795,7 @@ to clean and process user input.
 
 The program uses `True` and `False` to determine whether conditions are satisfied.
 
-For example:
+Example:
 
 ```python
 if check_winner(board, current_symbol):
@@ -1193,43 +1805,46 @@ if check_winner(board, current_symbol):
 
 ## Modular Programming
 
-One of the biggest improvements in Version 2 is the use of separate functions.
+One of the biggest improvements in the project is the use of separate functions.
 
-Instead of putting the entire game inside one large block of code, different responsibilities are separated.
+Instead of placing the entire game inside one large block of code, different responsibilities are separated.
 
 ```text
-Display
-   ↓
 Input
-   ↓
+  ↓
 Validation
-   ↓
+  ↓
 Game Logic
-   ↓
+  ↓
+Computer Logic
+  ↓
 Score System
-   ↓
+  ↓
+Statistics
+  ↓
 Menu
 ```
 
-This makes the project easier to expand in future versions.
+This makes the project easier to understand and expand.
 
 ---
 
 # Current Limitations
 
-Although the game has been improved significantly, it is still intentionally simple.
+Although the game has been expanded significantly, it still has some limitations.
 
 Current limitations include:
 
 * The game is terminal-based.
-* Both players need to use the same computer.
-* There is no computer opponent.
-* There is no AI.
+* Player vs Computer currently uses basic computer decision-making.
+* The Hard difficulty is not a true Minimax AI.
 * Scores are only stored while the program is running.
 * Scores are not saved to a file or database.
 * There is no graphical interface.
-* There are no difficulty levels.
 * There are no sound effects.
+* There is no online multiplayer.
+* There is no player account system.
+* Game history is not permanently saved.
 
 These limitations provide opportunities for future development.
 
@@ -1239,22 +1854,11 @@ These limitations provide opportunities for future development.
 
 The project can continue to grow into a more advanced application.
 
-## Version 3 — Computer Opponent
+## Version 4 — Advanced AI
 
-Add a computer-controlled player.
+Improve the computer opponent using the **Minimax algorithm**.
 
-Possible game modes:
-
-```text
-1. Player vs Player
-2. Player vs Computer
-```
-
----
-
-## Version 4 — Difficulty Levels
-
-Add different AI difficulties:
+Possible difficulty levels:
 
 ```text
 Easy
@@ -1263,21 +1867,21 @@ Hard
 Impossible
 ```
 
----
-
-## Version 5 — Smarter AI
-
-Implement the **Minimax algorithm** so the computer can analyze possible moves.
-
-The hardest difficulty could be designed so that the computer cannot easily be defeated.
+The Impossible difficulty could use Minimax to analyze possible future moves.
 
 ---
 
-## Version 6 — Persistent Scoreboard
+## Version 5 — Persistent Scoreboard
 
-Save scores to a file so that they remain available after closing the program.
+Save scores so they remain available after closing the program.
 
-For example:
+Possible storage:
+
+```text
+scores.json
+```
+
+or:
 
 ```text
 scores.txt
@@ -1285,9 +1889,27 @@ scores.txt
 
 ---
 
+## Version 6 — Game History
+
+Store completed matches.
+
+Possible information:
+
+```text
+Player X
+Player O
+Game Mode
+Difficulty
+Winner
+Number of Moves
+Date
+```
+
+---
+
 ## Version 7 — Graphical Interface
 
-Create a graphical version using **Tkinter**.
+Create a graphical version using **Tkinter** or **CustomTkinter**.
 
 Instead of typing:
 
@@ -1299,7 +1921,22 @@ players could click directly on the board.
 
 ---
 
-## Version 8 — Statistics
+## Version 8 — Database
+
+Use SQLite to store:
+
+* Player names
+* Match history
+* Scores
+* Game results
+* Statistics
+* Winning streaks
+
+This would turn the project into a more complete application.
+
+---
+
+## Version 9 — Advanced Statistics
 
 Add statistics such as:
 
@@ -1310,20 +1947,26 @@ Add statistics such as:
 * Win percentage
 * Current winning streak
 * Longest winning streak
+* Average moves
+* Most common first move
+* Games against the computer
+* Games against another player
 
 ---
 
-## Version 9 — Database
+## Version 10 — Multiple Board Sizes
 
-Use SQLite to store:
+Allow players to select different board sizes.
 
-* Player names
-* Match history
-* Scores
-* Game results
-* Statistics
+Possible options:
 
-This would turn the project into a more complete application.
+```text
+3 × 3
+4 × 4
+5 × 5
+```
+
+This would require more advanced win-detection logic.
 
 ---
 
@@ -1341,17 +1984,33 @@ This would turn the project into a more complete application.
 [x] Add player names
 [x] Add main menu
 [x] Add rules section
+[x] Add How To Play section
 [x] Add score tracking
 [x] Add Play Again option
 [x] Add Change Player Names
 [x] Add quit option during a game
 [x] Organize code into functions
-[ ] Add computer opponent
-[ ] Add AI difficulty levels
+[x] Add Player vs Computer mode
+[x] Add Easy difficulty
+[x] Add Medium difficulty
+[x] Add Hard difficulty
+[x] Add computer move logic
+[x] Add first-player selection
+[x] Add random first-player option
+[x] Add move tracking
+[x] Add win percentages
+[x] Add game statistics
+[x] Add average moves calculation
+[x] Add Reset Scores
+[ ] Improve Hard mode with Minimax
+[ ] Add Impossible difficulty
 [ ] Add persistent scores
-[ ] Add game statistics
-[ ] Create graphical interface
+[ ] Add game history
 [ ] Add SQLite database
+[ ] Create graphical interface
+[ ] Add sound effects
+[ ] Add multiple board sizes
+[ ] Add online multiplayer
 ```
 
 ---
@@ -1360,11 +2019,20 @@ This would turn the project into a more complete application.
 
 This project was created as part of my journey in learning **Python programming and software development**.
 
-The first version of the project focused on learning the basic concepts needed to create a playable game. The improved version expands those concepts into a more structured application.
+The first version focused on learning the basic concepts needed to create a playable game. Later versions expanded those concepts into a more structured application.
 
-Through this project, I am practicing how to take a simple idea and gradually improve it by adding features, organizing code, handling errors, and improving the overall user experience.
+The current version demonstrates how a simple programming project can gradually become more advanced by adding:
 
-This project also serves as an example of how a beginner Python project can evolve over multiple versions.
+* New game modes
+* Computer decision-making
+* Difficulty levels
+* Statistics
+* Score management
+* Better input handling
+* Modular programming
+* Improved user experience
+
+This project also demonstrates the process of taking an existing program and continuously improving it instead of rebuilding it from scratch.
 
 ---
 
@@ -1382,35 +2050,45 @@ By building this project, I practiced:
 * Using dictionaries
 * Using tuples
 * Working with list indexes
+* Using the `random` module
+* Using the `time` module
 * Designing basic game logic
-* Organizing code into separate functions
+* Creating computer decision logic
+* Organizing code into functions
 * Managing multiple game states
 * Tracking scores
+* Calculating statistics
 * Creating menu systems
-* Improving an existing program instead of rebuilding it from scratch
+* Handling invalid input
+* Improving an existing program
+* Planning future software improvements
 
 ---
 
 # Project Goals
 
-The long-term goal of this project is to continue improving it as my Python skills develop.
+The long-term goal of this project is to continue improving it as my Python programming skills develop.
 
-The project can eventually evolve from a simple terminal game into a complete Tic Tac Toe application with:
+The project can eventually evolve from a simple terminal game into a more complete Tic Tac Toe application.
 
 ```text
-Terminal Version
-       ↓
-Improved Terminal Version
-       ↓
-Computer Opponent
-       ↓
-AI Difficulty
-       ↓
-Graphical Interface
-       ↓
-Statistics
-       ↓
+Basic Terminal Game
+        ↓
+Improved Terminal Game
+        ↓
+Player vs Computer
+        ↓
+Difficulty Levels
+        ↓
+Advanced AI
+        ↓
+Persistent Statistics
+        ↓
 Database
+        ↓
+Graphical Interface
+        ↓
+Advanced Tic Tac Toe Application
 ```
 
 Each version provides an opportunity to learn new programming concepts and apply them to an existing project.
