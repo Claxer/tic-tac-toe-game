@@ -7,9 +7,9 @@ import random
 import time
 
 
-# ------------------------------------------
+# ==========================================
 # Display Game Title
-# ------------------------------------------
+# ==========================================
 
 def display_title():
     print()
@@ -20,22 +20,23 @@ def display_title():
     print()
 
 
-# ------------------------------------------
+# ==========================================
 # Create a New Board
-# ------------------------------------------
+# ==========================================
 
 def create_board():
     return [" " for _ in range(9)]
 
 
-# ------------------------------------------
+# ==========================================
 # Display the Board
-# ------------------------------------------
+# ==========================================
 
 def display_board(board):
     print()
     print("                 BOARD")
     print()
+
     print(f"             {board[0]}   |   {board[1]}   |   {board[2]}")
     print("           -------+-------+-------")
     print(f"             {board[3]}   |   {board[4]}   |   {board[5]}")
@@ -44,14 +45,15 @@ def display_board(board):
     print()
 
 
-# ------------------------------------------
+# ==========================================
 # Display Position Guide
-# ------------------------------------------
+# ==========================================
 
 def display_position_guide():
     print()
     print("             POSITION GUIDE")
     print()
+
     print("               1   |   2   |   3")
     print("             -------+-------+-------")
     print("               4   |   5   |   6")
@@ -60,9 +62,9 @@ def display_position_guide():
     print()
 
 
-# ------------------------------------------
+# ==========================================
 # Get Player Names
-# ------------------------------------------
+# ==========================================
 
 def get_player_names():
     print()
@@ -81,9 +83,9 @@ def get_player_names():
     return player_x, player_o
 
 
-# ------------------------------------------
+# ==========================================
 # Display Scores
-# ------------------------------------------
+# ==========================================
 
 def display_scores(player_x, player_o, scores):
     total_games = scores["X"] + scores["O"] + scores["Draws"]
@@ -114,11 +116,12 @@ def display_scores(player_x, player_o, scores):
     print()
 
 
-# ------------------------------------------
+# ==========================================
 # Display Detailed Statistics
-# ------------------------------------------
+# ==========================================
 
 def display_statistics(player_x, player_o, scores, total_moves):
+
     total_games = scores["X"] + scores["O"] + scores["Draws"]
 
     print()
@@ -140,11 +143,12 @@ def display_statistics(player_x, player_o, scores, total_moves):
     print()
 
 
-# ------------------------------------------
+# ==========================================
 # Check Valid Move
-# ------------------------------------------
+# ==========================================
 
 def is_valid_move(board, move):
+
     if move < 1 or move > 9:
         return False
 
@@ -156,25 +160,28 @@ def is_valid_move(board, move):
     return True
 
 
-# ------------------------------------------
+# ==========================================
 # Get Available Moves
-# ------------------------------------------
+# ==========================================
 
 def get_available_moves(board):
+
     available_moves = []
 
     for i in range(9):
+
         if board[i] == " ":
             available_moves.append(i + 1)
 
     return available_moves
 
 
-# ------------------------------------------
+# ==========================================
 # Get Player Move
-# ------------------------------------------
+# ==========================================
 
 def get_player_move(player_name, player_symbol, board):
+
     while True:
 
         print(f"{player_name} ({player_symbol})")
@@ -187,6 +194,7 @@ def get_player_move(player_name, player_symbol, board):
             return None
 
         if not choice.isdigit():
+
             print()
             print("Invalid input.")
             print("Please enter a number from 1 to 9.")
@@ -198,12 +206,14 @@ def get_player_move(player_name, player_symbol, board):
         if not is_valid_move(board, move):
 
             if move < 1 or move > 9:
+
                 print()
                 print("Invalid position.")
                 print("Choose a number from 1 to 9.")
                 print()
 
             else:
+
                 print()
                 print("That position is already taken.")
                 print("Choose another position.")
@@ -214,21 +224,22 @@ def get_player_move(player_name, player_symbol, board):
         return move
 
 
-# ------------------------------------------
+# ==========================================
 # Make a Move
-# ------------------------------------------
+# ==========================================
 
 def make_move(board, move, player_symbol):
     board[move - 1] = player_symbol
 
 
-# ------------------------------------------
+# ==========================================
 # Winning Combinations
-# ------------------------------------------
+# ==========================================
 
 def get_winning_combinations():
 
     return [
+
         # Rows
         (0, 1, 2),
         (3, 4, 5),
@@ -245,9 +256,9 @@ def get_winning_combinations():
     ]
 
 
-# ------------------------------------------
+# ==========================================
 # Check Winner
-# ------------------------------------------
+# ==========================================
 
 def check_winner(board, player_symbol):
 
@@ -265,9 +276,9 @@ def check_winner(board, player_symbol):
     return False
 
 
-# ------------------------------------------
+# ==========================================
 # Find Winning Move
-# ------------------------------------------
+# ==========================================
 
 def find_winning_move(board, symbol):
 
@@ -285,11 +296,12 @@ def find_winning_move(board, symbol):
     return None
 
 
-# ------------------------------------------
+# ==========================================
 # Easy Computer Move
-# ------------------------------------------
+# ==========================================
 
 def easy_computer_move(board):
+
     available_moves = get_available_moves(board)
 
     if available_moves:
@@ -298,20 +310,26 @@ def easy_computer_move(board):
     return None
 
 
-# ------------------------------------------
+# ==========================================
 # Medium Computer Move
-# ------------------------------------------
+# ==========================================
 
 def medium_computer_move(board, computer_symbol, player_symbol):
 
     # First, try to win
-    winning_move = find_winning_move(board, computer_symbol)
+    winning_move = find_winning_move(
+        board,
+        computer_symbol
+    )
 
     if winning_move is not None:
         return winning_move
 
     # Then block the player
-    blocking_move = find_winning_move(board, player_symbol)
+    blocking_move = find_winning_move(
+        board,
+        player_symbol
+    )
 
     if blocking_move is not None:
         return blocking_move
@@ -322,6 +340,7 @@ def medium_computer_move(board, computer_symbol, player_symbol):
 
     # Choose a corner
     corners = [1, 3, 7, 9]
+
     available_corners = [
         move for move in corners
         if move in get_available_moves(board)
@@ -334,53 +353,145 @@ def medium_computer_move(board, computer_symbol, player_symbol):
     return easy_computer_move(board)
 
 
-# ------------------------------------------
-# Hard Computer Move
-# ------------------------------------------
+# ==========================================
+# ADDED FEATURE
+# TRUE HARD COMPUTER MOVE
+# MINIMAX ALGORITHM
+# ==========================================
 
-def hard_computer_move(board, computer_symbol, player_symbol):
+def minimax(
+    board,
+    depth,
+    is_maximizing,
+    computer_symbol,
+    player_symbol
+):
 
-    # Try to win
-    winning_move = find_winning_move(board, computer_symbol)
+    # Computer wins
+    if check_winner(board, computer_symbol):
+        return 10 - depth
 
-    if winning_move is not None:
-        return winning_move
+    # Player wins
+    if check_winner(board, player_symbol):
+        return depth - 10
 
-    # Try to block player
-    blocking_move = find_winning_move(board, player_symbol)
+    # Draw
+    if is_board_full(board):
+        return 0
 
-    if blocking_move is not None:
-        return blocking_move
+    # Computer's turn
+    if is_maximizing:
 
-    # Take center
-    if board[4] == " ":
-        return 5
+        best_score = -1000
 
-    # Take corners
-    corners = [1, 3, 7, 9]
+        for move in get_available_moves(board):
 
-    available_corners = [
-        move for move in corners
-        if move in get_available_moves(board)
-    ]
+            make_move(
+                board,
+                move,
+                computer_symbol
+            )
 
-    if available_corners:
-        return random.choice(available_corners)
+            score = minimax(
+                board,
+                depth + 1,
+                False,
+                computer_symbol,
+                player_symbol
+            )
 
-    # Take any available space
-    return easy_computer_move(board)
+            board[move - 1] = " "
+
+            best_score = max(
+                best_score,
+                score
+            )
+
+        return best_score
+
+    # Player's turn
+    else:
+
+        best_score = 1000
+
+        for move in get_available_moves(board):
+
+            make_move(
+                board,
+                move,
+                player_symbol
+            )
+
+            score = minimax(
+                board,
+                depth + 1,
+                True,
+                computer_symbol,
+                player_symbol
+            )
+
+            board[move - 1] = " "
+
+            best_score = min(
+                best_score,
+                score
+            )
+
+        return best_score
 
 
-# ------------------------------------------
+def hard_computer_move(
+    board,
+    computer_symbol,
+    player_symbol
+):
+
+    best_score = -1000
+    best_move = None
+
+    for move in get_available_moves(board):
+
+        make_move(
+            board,
+            move,
+            computer_symbol
+        )
+
+        score = minimax(
+            board,
+            0,
+            False,
+            computer_symbol,
+            player_symbol
+        )
+
+        board[move - 1] = " "
+
+        if score > best_score:
+
+            best_score = score
+            best_move = move
+
+    return best_move
+
+
+# ==========================================
 # Get Computer Move
-# ------------------------------------------
+# ==========================================
 
-def get_computer_move(board, difficulty, computer_symbol, player_symbol):
+def get_computer_move(
+    board,
+    difficulty,
+    computer_symbol,
+    player_symbol
+):
 
     if difficulty == "Easy":
+
         return easy_computer_move(board)
 
     elif difficulty == "Medium":
+
         return medium_computer_move(
             board,
             computer_symbol,
@@ -388,6 +499,7 @@ def get_computer_move(board, difficulty, computer_symbol, player_symbol):
         )
 
     elif difficulty == "Hard":
+
         return hard_computer_move(
             board,
             computer_symbol,
@@ -397,17 +509,17 @@ def get_computer_move(board, difficulty, computer_symbol, player_symbol):
     return easy_computer_move(board)
 
 
-# ------------------------------------------
+# ==========================================
 # Check Board Full
-# ------------------------------------------
+# ==========================================
 
 def is_board_full(board):
     return " " not in board
 
 
-# ------------------------------------------
+# ==========================================
 # Display Winner
-# ------------------------------------------
+# ==========================================
 
 def display_winner(player_name, player_symbol):
 
@@ -419,9 +531,9 @@ def display_winner(player_name, player_symbol):
     print()
 
 
-# ------------------------------------------
+# ==========================================
 # Display Draw
-# ------------------------------------------
+# ==========================================
 
 def display_draw():
 
@@ -432,9 +544,9 @@ def display_draw():
     print()
 
 
-# ------------------------------------------
+# ==========================================
 # Display Computer Move
-# ------------------------------------------
+# ==========================================
 
 def display_computer_move(move):
 
@@ -445,9 +557,9 @@ def display_computer_move(move):
     print()
 
 
-# ------------------------------------------
+# ==========================================
 # Select Game Mode
-# ------------------------------------------
+# ==========================================
 
 def select_game_mode():
 
@@ -462,7 +574,9 @@ def select_game_mode():
         print("3. Back")
         print("=" * 55)
 
-        choice = input("Choose an option: ").strip()
+        choice = input(
+            "Choose an option: "
+        ).strip()
 
         if choice == "1":
             return "PvP"
@@ -474,14 +588,15 @@ def select_game_mode():
             return None
 
         else:
+
             print()
             print("Invalid option.")
             print("Please choose 1, 2, or 3.")
 
 
-# ------------------------------------------
+# ==========================================
 # Select Difficulty
-# ------------------------------------------
+# ==========================================
 
 def select_difficulty():
 
@@ -496,7 +611,9 @@ def select_difficulty():
         print("3. Hard")
         print("=" * 55)
 
-        choice = input("Choose difficulty: ").strip()
+        choice = input(
+            "Choose difficulty: "
+        ).strip()
 
         if choice == "1":
             return "Easy"
@@ -508,14 +625,15 @@ def select_difficulty():
             return "Hard"
 
         else:
+
             print()
             print("Invalid option.")
             print("Please choose 1, 2, or 3.")
 
 
-# ------------------------------------------
+# ==========================================
 # Select First Player
-# ------------------------------------------
+# ==========================================
 
 def select_first_player():
 
@@ -530,7 +648,9 @@ def select_first_player():
         print("3. Random")
         print("=" * 55)
 
-        choice = input("Choose an option: ").strip()
+        choice = input(
+            "Choose an option: "
+        ).strip()
 
         if choice == "1":
             return "X"
@@ -542,180 +662,437 @@ def select_first_player():
             return random.choice(["X", "O"])
 
         else:
+
             print()
             print("Invalid option.")
 
 
-# ------------------------------------------
-# Play One Game
-# ------------------------------------------
+# ==========================================
+# ADDED FEATURE
+# MOVE HISTORY
+# ==========================================
 
-def play_game(
-    player_x,
-    player_o,
-    mode,
-    difficulty=None,
-    first_player="X"
-):
+def display_move_history(move_history):
 
-    board = create_board()
+    print()
+    print("=" * 55)
+    print("                  MOVE HISTORY")
+    print("=" * 55)
 
-    move_count = 0
+    if not move_history:
 
-    if first_player == "X":
-        current_symbol = "X"
-        current_player = player_x
+        print("No moves have been made yet.")
+
     else:
-        current_symbol = "O"
-        current_player = player_o
 
-    display_position_guide()
-
-    while True:
-
-        display_board(board)
-
-        # ----------------------------------
-        # Player vs Computer
-        # ----------------------------------
-
-        if mode == "PvC" and current_symbol == "O":
-
-            move = get_computer_move(
-                board,
-                difficulty,
-                "O",
-                "X"
-            )
-
-            display_computer_move(move)
-
-        else:
-
-            move = get_player_move(
-                current_player,
-                current_symbol,
-                board
-            )
-
-        # ----------------------------------
-        # Quit Game
-        # ----------------------------------
-
-        if move is None:
-
-            print()
-            print(f"{current_player} left the game.")
-            print("Returning to the main menu...")
-            print()
-
-            return "quit", move_count
-
-        # ----------------------------------
-        # Make Move
-        # ----------------------------------
-
-        make_move(
-            board,
-            move,
-            current_symbol
-        )
-
-        move_count += 1
-
-        # ----------------------------------
-        # Check Winner
-        # ----------------------------------
-
-        if check_winner(
-            board,
-            current_symbol
+        for number, move in enumerate(
+            move_history,
+            start=1
         ):
 
-            display_board(board)
-
-            display_winner(
-                current_player,
-                current_symbol
+            print(
+                f"{number}. "
+                f"{move['player']} "
+                f"({move['symbol']}) "
+                f"- Position {move['position']}"
             )
 
-            return current_symbol, move_count
-
-        # ----------------------------------
-        # Check Draw
-        # ----------------------------------
-
-        if is_board_full(board):
-
-            display_board(board)
-
-            display_draw()
-
-            return "Draw", move_count
-
-        # ----------------------------------
-        # Switch Player
-        # ----------------------------------
-
-        if current_symbol == "X":
-
-            current_symbol = "O"
-
-            if mode == "PvC":
-                current_player = "Computer"
-            else:
-                current_player = player_o
-
-        else:
-
-            current_symbol = "X"
-            current_player = player_x
+    print("=" * 55)
+    print()
 
 
-# ------------------------------------------
-# Play Again
-# ------------------------------------------
+# ==========================================
+# ADDED FEATURE
+# WINNING LINE
+# ==========================================
 
-def play_again():
+def get_winning_line(board, symbol):
+
+    for combination in get_winning_combinations():
+
+        first, second, third = combination
+
+        if (
+            board[first] == symbol
+            and board[second] == symbol
+            and board[third] == symbol
+        ):
+
+            return combination
+
+    return None
+
+
+# ==========================================
+# ADDED FEATURE
+# DISPLAY WINNING LINE
+# ==========================================
+
+def display_winning_line(
+    winning_line
+):
+
+    if winning_line is not None:
+
+        positions = [
+            position + 1
+            for position in winning_line
+        ]
+
+        print(
+            "Winning positions: "
+            + ", ".join(
+                map(str, positions)
+            )
+        )
+
+
+# ==========================================
+# ADDED FEATURE
+# STREAK STATISTICS
+# ==========================================
+
+def update_streaks(
+    statistics,
+    winner
+):
+
+    if winner == "X":
+
+        statistics["X_streak"] += 1
+        statistics["O_streak"] = 0
+
+        if (
+            statistics["X_streak"]
+            > statistics["X_best_streak"]
+        ):
+
+            statistics["X_best_streak"] = (
+                statistics["X_streak"]
+            )
+
+    elif winner == "O":
+
+        statistics["O_streak"] += 1
+        statistics["X_streak"] = 0
+
+        if (
+            statistics["O_streak"]
+            > statistics["O_best_streak"]
+        ):
+
+            statistics["O_best_streak"] = (
+                statistics["O_streak"]
+            )
+
+    else:
+
+        statistics["X_streak"] = 0
+        statistics["O_streak"] = 0
+
+
+# ==========================================
+# ADDED FEATURE
+# EXTENDED STATISTICS
+# ==========================================
+
+def display_extended_statistics(
+    player_x,
+    player_o,
+    scores,
+    statistics
+):
+
+    total_games = (
+        scores["X"]
+        + scores["O"]
+        + scores["Draws"]
+    )
+
+    print()
+    print("=" * 55)
+    print("              EXTENDED STATISTICS")
+    print("=" * 55)
+
+    print()
+    print(f"Total Games:       {total_games}")
+    print(f"{player_x} Wins:      {scores['X']}")
+    print(f"{player_o} Wins:      {scores['O']}")
+    print(f"Draws:             {scores['Draws']}")
+
+    print()
+    print("MOVE STATISTICS")
+    print("-" * 35)
+
+    print(
+        f"{player_x} Moves:      "
+        f"{statistics['X_moves']}"
+    )
+
+    print(
+        f"{player_o} Moves:      "
+        f"{statistics['O_moves']}"
+    )
+
+    print(
+        f"Total Moves:       "
+        f"{statistics['total_moves']}"
+    )
+
+    print()
+    print("STREAK STATISTICS")
+    print("-" * 35)
+
+    print(
+        f"{player_x} Current Streak: "
+        f"{statistics['X_streak']}"
+    )
+
+    print(
+        f"{player_o} Current Streak: "
+        f"{statistics['O_streak']}"
+    )
+
+    print(
+        f"{player_x} Best Streak:    "
+        f"{statistics['X_best_streak']}"
+    )
+
+    print(
+        f"{player_o} Best Streak:    "
+        f"{statistics['O_best_streak']}"
+    )
+
+    print()
+    print(
+        f"Games Quit:        "
+        f"{statistics['games_quit']}"
+    )
+
+    if total_games > 0:
+
+        average_moves = (
+            statistics["total_moves"]
+            / total_games
+        )
+
+        print(
+            f"Average Moves:     "
+            f"{average_moves:.2f}"
+        )
+
+    print("=" * 55)
+    print()
+
+
+# ==========================================
+# ADDED FEATURE
+# GAME COMMANDS
+# ==========================================
+
+def get_advanced_player_move(
+    player_name,
+    player_symbol,
+    board,
+    move_history
+):
 
     while True:
 
-        print("Would you like to play again?")
-        print("Y - Yes")
-        print("N - No")
+        print(
+            f"{player_name} ({player_symbol})"
+        )
+
+        print()
+        print("Commands:")
+        print("1-9 = Make a move")
+        print("U   = Undo")
+        print("H   = Move History")
+        print("R   = Restart")
+        print("Q   = Quit")
 
         choice = input("> ").strip().upper()
 
-        if choice == "Y":
-            return True
+        if choice == "Q":
 
-        elif choice == "N":
-            return False
+            return "quit"
 
-        else:
+        elif choice == "U":
+
+            return "undo"
+
+        elif choice == "H":
+
+            display_move_history(
+                move_history
+            )
+
+            continue
+
+        elif choice == "R":
+
+            return "restart"
+
+        elif not choice.isdigit():
+
             print()
-            print("Please enter Y or N.")
+            print("Invalid input.")
             print()
 
+            continue
 
-# ------------------------------------------
-# Reset Scores
-# ------------------------------------------
+        move = int(choice)
 
-def reset_scores(scores):
+        if not is_valid_move(
+            board,
+            move
+        ):
 
-    scores["X"] = 0
-    scores["O"] = 0
-    scores["Draws"] = 0
+            if move < 1 or move > 9:
+
+                print()
+                print(
+                    "Choose a number from 1 to 9."
+                )
+
+            else:
+
+                print()
+                print(
+                    "That position is already taken."
+                )
+
+            continue
+
+        return move
+
+
+# ==========================================
+# ADDED FEATURE
+# UNDO MOVE
+# ==========================================
+
+def undo_last_move(
+    board,
+    move_history,
+    mode
+):
+
+    if not move_history:
+
+        print()
+        print(
+            "There are no moves to undo."
+        )
+
+        return False
+
+    # Player vs Player
+    if mode == "PvP":
+
+        last_move = move_history.pop()
+
+        undo_position = (
+            last_move["position"]
+        )
+
+        board[undo_position - 1] = " "
+
+        print()
+        print(
+            "Last move has been undone."
+        )
+
+        return True
+
+    # Player vs Computer
+    else:
+
+        # Remove player's and computer's
+        # most recent moves
+        moves_to_remove = min(
+            2,
+            len(move_history)
+        )
+
+        for _ in range(
+            moves_to_remove
+        ):
+
+            last_move = move_history.pop()
+
+            undo_position = (
+                last_move["position"]
+            )
+
+            board[
+                undo_position - 1
+            ] = " "
+
+        print()
+        print(
+            "Last turn has been undone."
+        )
+
+        return True
+
+
+# ==========================================
+# ADDED FEATURE
+# ABOUT GAME
+# ==========================================
+
+def display_about():
 
     print()
-    print("All scores have been reset.")
+    print("=" * 55)
+    print("                    ABOUT GAME")
+    print("=" * 55)
+
+    print()
+    print("TIC TAC TOE")
+    print("Python Edition")
+
+    print()
+    print("This project is a terminal-based")
+    print("Tic Tac Toe game made with Python.")
+
+    print()
+    print("Features include:")
+
+    print("- Player vs Player")
+    print("- Player vs Computer")
+    print("- Easy, Medium and Hard AI")
+    print("- Minimax algorithm")
+    print("- Score tracking")
+    print("- Statistics")
+    print("- Win streaks")
+    print("- Move history")
+    print("- Undo")
+    print("- Restart")
+    print("- Rules and instructions")
+
+    print()
+    print("Python concepts used:")
+
+    print("- Functions")
+    print("- Lists")
+    print("- Dictionaries")
+    print("- Loops")
+    print("- Conditions")
+    print("- Random module")
+    print("- Recursion")
+    print("- Algorithms")
+    print("- Input validation")
+
+    print()
+    print("=" * 55)
     print()
 
 
-# ------------------------------------------
+# ==========================================
 # Display Rules
-# ------------------------------------------
+# ==========================================
 
 def display_rules():
 
@@ -745,14 +1122,20 @@ def display_rules():
     print("7. Enter Q during a player's turn to quit")
     print("   the current game.")
     print()
+    print("8. Enter U to undo your previous move.")
+    print()
+    print("9. Enter H to view the move history.")
+    print()
+    print("10. Enter R to restart the current game.")
 
+    print()
     print("=" * 55)
     print()
 
 
-# ------------------------------------------
+# ==========================================
 # How To Play
-# ------------------------------------------
+# ==========================================
 
 def display_how_to_play():
 
@@ -764,26 +1147,36 @@ def display_how_to_play():
     print()
     print("The board uses numbers from 1 to 9.")
     print()
+
     print("Example:")
     print()
+
     print("              1   |   2   |   3")
     print("            -------+-------+-------")
     print("              4   |   5   |   6")
     print("            -------+-------+-------")
     print("              7   |   8   |   9")
+
     print()
 
     print("To place your symbol, type the number")
     print("of the position you want.")
-    print()
 
+    print()
     print("Example:")
     print("> 5")
-    print()
 
+    print()
     print("Your symbol will be placed in the center.")
-    print()
 
+    print()
+    print("Extra commands:")
+    print("U = Undo")
+    print("H = Move History")
+    print("R = Restart")
+    print("Q = Quit")
+
+    print()
     print("The objective is to create a line")
     print("of three of your symbols.")
 
@@ -792,9 +1185,383 @@ def display_how_to_play():
     print()
 
 
-# ------------------------------------------
+# ==========================================
+# ADDED FEATURE
+# MOVE GUIDE
+# ==========================================
+
+def display_move_guide():
+
+    print()
+    print("=" * 55)
+    print("                  MOVE GUIDE")
+    print("=" * 55)
+
+    print()
+
+    print("                      1   |   2   |   3")
+    print("                    -------+-------+-------")
+    print("                      4   |   5   |   6")
+    print("                    -------+-------+-------")
+    print("                      7   |   8   |   9")
+
+    print()
+
+    print("Center position: 5")
+    print("Corners: 1, 3, 7, 9")
+    print("Sides: 2, 4, 6, 8")
+
+    print()
+    print("=" * 55)
+    print()
+
+
+# ==========================================
+# Play One Game
+# ==========================================
+
+def play_game(
+    player_x,
+    player_o,
+    mode,
+    difficulty=None,
+    first_player="X"
+):
+
+    board = create_board()
+
+    move_count = 0
+
+    # ======================================
+    # ADDED FEATURE
+    # MOVE HISTORY
+    # ======================================
+
+    move_history = []
+
+    # ======================================
+    # ADDED FEATURE
+    # TRACK CURRENT TURN
+    # ======================================
+
+    current_symbol = first_player
+
+    if first_player == "X":
+
+        current_player = player_x
+
+    else:
+
+        if mode == "PvC":
+            current_player = "Computer"
+        else:
+            current_player = player_o
+
+    display_position_guide()
+
+    while True:
+
+        print()
+
+        # ==================================
+        # DISPLAY BOARD
+        # ==================================
+
+        display_board(board)
+
+        print(
+            f"Moves made: {move_count}"
+        )
+
+        print()
+
+        # ==================================
+        # PLAYER VS COMPUTER
+        # ==================================
+
+        if (
+            mode == "PvC"
+            and current_symbol == "O"
+        ):
+
+            move = get_computer_move(
+                board,
+                difficulty,
+                "O",
+                "X"
+            )
+
+            display_computer_move(move)
+
+        else:
+
+            # ==================================
+            # ADDED FEATURE
+            # ADVANCED PLAYER INPUT
+            # ==================================
+
+            move = get_advanced_player_move(
+                current_player,
+                current_symbol,
+                board,
+                move_history
+            )
+
+        # ==================================
+        # QUIT GAME
+        # ==================================
+
+        if move == "quit":
+
+            print()
+            print(
+                f"{current_player} left the game."
+            )
+
+            print(
+                "Returning to the main menu..."
+            )
+
+            print()
+
+            return "quit", move_count
+
+        # ==================================
+        # RESTART GAME
+        # ==================================
+
+        if move == "restart":
+
+            confirm = input(
+                "Restart this game? (Y/N): "
+            ).strip().upper()
+
+            if confirm == "Y":
+
+                print()
+                print(
+                    "Restarting game..."
+                )
+
+                time.sleep(0.7)
+
+                return "restart", move_count
+
+            continue
+
+        # ==================================
+        # UNDO MOVE
+        # ==================================
+
+        if move == "undo":
+
+            if undo_last_move(
+                board,
+                move_history,
+                mode
+            ):
+
+                move_count = len(
+                    move_history
+                )
+
+                if mode == "PvC":
+
+                    current_symbol = "X"
+                    current_player = player_x
+
+                else:
+
+                    if move_count % 2 == 0:
+
+                        current_symbol = first_player
+
+                    else:
+
+                        if first_player == "X":
+                            current_symbol = "O"
+                        else:
+                            current_symbol = "X"
+
+                    if current_symbol == "X":
+                        current_player = player_x
+                    else:
+                        current_player = player_o
+
+            continue
+
+        # ==================================
+        # MAKE MOVE
+        # ==================================
+
+        make_move(
+            board,
+            move,
+            current_symbol
+        )
+
+        move_count += 1
+
+        # ==================================
+        # ADD MOVE TO HISTORY
+        # ==================================
+
+        move_history.append(
+            {
+                "player": current_player,
+                "symbol": current_symbol,
+                "position": move
+            }
+        )
+
+        # ==================================
+        # CHECK WINNER
+        # ==================================
+
+        if check_winner(
+            board,
+            current_symbol
+        ):
+
+            display_board(board)
+
+            display_winner(
+                current_player,
+                current_symbol
+            )
+
+            # ==================================
+            # ADDED FEATURE
+            # SHOW WINNING LINE
+            # ==================================
+
+            winning_line = get_winning_line(
+                board,
+                current_symbol
+            )
+
+            display_winning_line(
+                winning_line
+            )
+
+            print()
+            print("Final Move History:")
+
+            display_move_history(
+                move_history
+            )
+
+            return current_symbol, move_count
+
+        # ==================================
+        # CHECK DRAW
+        # ==================================
+
+        if is_board_full(board):
+
+            display_board(board)
+
+            display_draw()
+
+            print("Final Move History:")
+
+            display_move_history(
+                move_history
+            )
+
+            return "Draw", move_count
+
+        # ==================================
+        # SWITCH PLAYER
+        # ==================================
+
+        if current_symbol == "X":
+
+            current_symbol = "O"
+
+            if mode == "PvC":
+
+                current_player = "Computer"
+
+            else:
+
+                current_player = player_o
+
+        else:
+
+            current_symbol = "X"
+            current_player = player_x
+
+
+# ==========================================
+# Play Again
+# ==========================================
+
+def play_again():
+
+    while True:
+
+        print("Would you like to play again?")
+        print("Y - Yes")
+        print("N - No")
+
+        choice = input(
+            "> "
+        ).strip().upper()
+
+        if choice == "Y":
+            return True
+
+        elif choice == "N":
+            return False
+
+        else:
+
+            print()
+            print("Please enter Y or N.")
+            print()
+
+
+# ==========================================
+# Reset Scores
+# ==========================================
+
+def reset_scores(scores):
+
+    scores["X"] = 0
+    scores["O"] = 0
+    scores["Draws"] = 0
+
+    print()
+    print("All scores have been reset.")
+    print()
+
+
+# ==========================================
+# ADDED FEATURE
+# RESET EXTENDED STATISTICS
+# ==========================================
+
+def reset_extended_statistics(
+    statistics
+):
+
+    statistics["X_moves"] = 0
+    statistics["O_moves"] = 0
+    statistics["total_moves"] = 0
+
+    statistics["X_streak"] = 0
+    statistics["O_streak"] = 0
+
+    statistics["X_best_streak"] = 0
+    statistics["O_best_streak"] = 0
+
+    statistics["games_quit"] = 0
+
+
+# ==========================================
 # Main Menu
-# ------------------------------------------
+# ==========================================
 
 def display_menu():
 
@@ -810,28 +1577,36 @@ def display_menu():
     print("5. View Statistics")
     print("6. Change Player Names")
     print("7. Reset Scores")
-    print("8. Exit")
+
+    # ======================================
+    # ADDED MENU FEATURES
+    # ======================================
+
+    print("8. View Move Guide")
+    print("9. View About")
+    print("10. View Extended Statistics")
+    print("11. Exit")
 
     print("=" * 55)
 
 
-# ------------------------------------------
+# ==========================================
 # Main Program
-# ------------------------------------------
+# ==========================================
 
 def main():
 
     display_title()
 
-    # --------------------------------------
+    # ======================================
     # Player Information
-    # --------------------------------------
+    # ======================================
 
     player_x, player_o = get_player_names()
 
-    # --------------------------------------
+    # ======================================
     # Score System
-    # --------------------------------------
+    # ======================================
 
     scores = {
         "X": 0,
@@ -839,21 +1614,51 @@ def main():
         "Draws": 0
     }
 
+    # ======================================
+    # ADDED FEATURE
+    # STATISTICS SYSTEM
+    # ======================================
+
+    statistics = {
+
+        "X_moves": 0,
+        "O_moves": 0,
+
+        "total_moves": 0,
+
+        "X_streak": 0,
+        "O_streak": 0,
+
+        "X_best_streak": 0,
+        "O_best_streak": 0,
+
+        "games_quit": 0
+    }
+
     total_moves = 0
 
-    # --------------------------------------
+    # ======================================
+    # ADDED FEATURE
+    # ROUND NUMBER
+    # ======================================
+
+    round_number = 1
+
+    # ======================================
     # Main Program Loop
-    # --------------------------------------
+    # ======================================
 
     while True:
 
         display_menu()
 
-        choice = input("Choose an option: ").strip()
+        choice = input(
+            "Choose an option: "
+        ).strip()
 
-        # ----------------------------------
+        # ==================================
         # Start Game
-        # ----------------------------------
+        # ==================================
 
         if choice == "1":
 
@@ -865,19 +1670,30 @@ def main():
             difficulty = None
 
             if mode == "PvC":
+
                 difficulty = select_difficulty()
 
                 print()
-                print(f"Difficulty selected: {difficulty}")
+                print(
+                    f"Difficulty selected: "
+                    f"{difficulty}"
+                )
 
             first_player = select_first_player()
 
             if first_player == "X":
+
                 print()
-                print(f"{player_x} will go first.")
+                print(
+                    f"{player_x} will go first."
+                )
+
             else:
+
                 print()
-                print(f"{player_o} will go first.")
+                print(
+                    f"{player_o} will go first."
+                )
 
             while True:
 
@@ -889,34 +1705,100 @@ def main():
                     first_player
                 )
 
-                total_moves += moves
+                # ==================================
+                # ADDED FEATURE
+                # RESTART
+                # ==================================
 
-                # ----------------------------------
+                if result == "restart":
+
+                    print()
+                    print(
+                        "Starting a new game..."
+                    )
+
+                    time.sleep(0.7)
+
+                    continue
+
+                # ==================================
                 # Player Quit
-                # ----------------------------------
+                # ==================================
 
                 if result == "quit":
+
+                    statistics[
+                        "games_quit"
+                    ] += 1
+
                     break
 
-                # ----------------------------------
-                # Update Scores
-                # ----------------------------------
+                # ==================================
+                # UPDATE TOTAL MOVES
+                # ==================================
+
+                total_moves += moves
+
+                statistics[
+                    "total_moves"
+                ] += moves
+
+                # ==================================
+                # SCORE UPDATE
+                # ==================================
 
                 if result == "X":
 
                     scores["X"] += 1
 
+                    update_streaks(
+                        statistics,
+                        "X"
+                    )
+
                 elif result == "O":
 
                     scores["O"] += 1
+
+                    update_streaks(
+                        statistics,
+                        "O"
+                    )
 
                 elif result == "Draw":
 
                     scores["Draws"] += 1
 
-                # ----------------------------------
-                # Show Score
-                # ----------------------------------
+                    update_streaks(
+                        statistics,
+                        "Draw"
+                    )
+
+                # ==================================
+                # MOVE STATISTICS
+                # ==================================
+
+                if result == "X":
+
+                    statistics[
+                        "X_moves"
+                    ] += moves
+
+                elif result == "O":
+
+                    statistics[
+                        "O_moves"
+                    ] += moves
+
+                # ==================================
+                # ROUND NUMBER
+                # ==================================
+
+                round_number += 1
+
+                # ==================================
+                # SHOW SCORE
+                # ==================================
 
                 display_scores(
                     player_x,
@@ -924,37 +1806,41 @@ def main():
                     scores
                 )
 
-                # ----------------------------------
-                # Ask Rematch
-                # ----------------------------------
+                # ==================================
+                # PLAY AGAIN
+                # ==================================
 
                 if not play_again():
+
                     break
 
-                # Randomize first player
+                # ==================================
+                # RANDOMIZE FIRST PLAYER
+                # ==================================
+
                 first_player = random.choice(
                     ["X", "O"]
                 )
 
-        # ----------------------------------
+        # ==================================
         # View Rules
-        # ----------------------------------
+        # ==================================
 
         elif choice == "2":
 
             display_rules()
 
-        # ----------------------------------
+        # ==================================
         # How To Play
-        # ----------------------------------
+        # ==================================
 
         elif choice == "3":
 
             display_how_to_play()
 
-        # ----------------------------------
+        # ==================================
         # View Scores
-        # ----------------------------------
+        # ==================================
 
         elif choice == "4":
 
@@ -964,9 +1850,9 @@ def main():
                 scores
             )
 
-        # ----------------------------------
+        # ==================================
         # View Statistics
-        # ----------------------------------
+        # ==================================
 
         elif choice == "5":
 
@@ -977,44 +1863,92 @@ def main():
                 total_moves
             )
 
-        # ----------------------------------
+        # ==================================
         # Change Names
-        # ----------------------------------
+        # ==================================
 
         elif choice == "6":
 
-            player_x, player_o = get_player_names()
+            player_x, player_o = (
+                get_player_names()
+            )
 
             print()
-            print("Player names updated successfully.")
+            print(
+                "Player names updated successfully."
+            )
             print()
 
-        # ----------------------------------
+        # ==================================
         # Reset Scores
-        # ----------------------------------
+        # ==================================
 
         elif choice == "7":
 
             confirm = input(
-                "Are you sure you want to reset scores? (Y/N): "
+                "Are you sure you want "
+                "to reset scores? (Y/N): "
             ).strip().upper()
 
             if confirm == "Y":
 
-                reset_scores(scores)
+                reset_scores(
+                    scores
+                )
+
+                reset_extended_statistics(
+                    statistics
+                )
+
                 total_moves = 0
+
+                round_number = 1
 
             else:
 
                 print()
-                print("Reset cancelled.")
+                print(
+                    "Reset cancelled."
+                )
                 print()
 
-        # ----------------------------------
-        # Exit
-        # ----------------------------------
+        # ==================================
+        # ADDED FEATURE
+        # MOVE GUIDE
+        # ==================================
 
         elif choice == "8":
+
+            display_move_guide()
+
+        # ==================================
+        # ADDED FEATURE
+        # ABOUT
+        # ==================================
+
+        elif choice == "9":
+
+            display_about()
+
+        # ==================================
+        # ADDED FEATURE
+        # EXTENDED STATISTICS
+        # ==================================
+
+        elif choice == "10":
+
+            display_extended_statistics(
+                player_x,
+                player_o,
+                scores,
+                statistics
+            )
+
+        # ==================================
+        # Exit
+        # ==================================
+
+        elif choice == "11":
 
             print()
             print("=" * 55)
@@ -1026,21 +1960,23 @@ def main():
 
             break
 
-        # ----------------------------------
+        # ==================================
         # Invalid Option
-        # ----------------------------------
+        # ==================================
 
         else:
 
             print()
             print("Invalid option.")
-            print("Please choose a number from 1 to 8.")
+            print(
+                "Please choose a number from 1 to 11."
+            )
             print()
 
 
-# ------------------------------------------
+# ==========================================
 # Run Program
-# ------------------------------------------
+# ==========================================
 
 if __name__ == "__main__":
     main()
