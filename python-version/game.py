@@ -1594,7 +1594,7 @@ def display_menu():
 # Main Program
 # ==========================================
 
-def main():
+def original_main():
 
     display_title()
 
@@ -1978,5 +1978,1040 @@ def main():
 # Run Program
 # ==========================================
 
+
+
+# ==========================================================
+# NEW FEATURES - GAME CENTER
+# These features are added without removing the original
+# Tic Tac Toe functions above.
+# ==========================================================
+
+import json
+from datetime import datetime
+
+
+SAVE_FILE = "tic_tac_toe_data.json"
+
+
+def create_game_data():
+    """Create data used by the new Game Center."""
+    return {
+        "match_history": [],
+        "achievements": [],
+        "challenges_completed": [],
+        "total_play_time": 0,
+        "fastest_win": None,
+        "longest_game": 0
+    }
+
+
+def load_game_data():
+    """Load Game Center data from a file."""
+    data = create_game_data()
+
+    try:
+        with open(SAVE_FILE, "r", encoding="utf-8") as file:
+            saved_data = json.load(file)
+
+        for key in data:
+            if key in saved_data:
+                data[key] = saved_data[key]
+
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+
+    return data
+
+
+def save_game_data(data):
+    """Save Game Center data to a file."""
+    try:
+        with open(SAVE_FILE, "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=4)
+    except OSError:
+        print("Could not save Game Center data.")
+
+
+def get_win_rate(player_symbol, scores):
+    """Calculate a player's win percentage."""
+    total_games = (
+        scores["X"]
+        + scores["O"]
+        + scores["Draws"]
+    )
+
+    if total_games == 0:
+        return 0
+
+    return (scores[player_symbol] / total_games) * 100
+
+
+def display_game_center_stats(player_x, player_o, scores, statistics, data):
+    """Display a larger statistics dashboard."""
+    total_games = (
+        scores["X"]
+        + scores["O"]
+        + scores["Draws"]
+    )
+
+    print()
+    print("=" * 65)
+    print("                    GAME CENTER")
+    print("=" * 65)
+
+    print()
+    print("PLAYER PERFORMANCE")
+    print("-" * 65)
+
+    print(f"{player_x} (X)")
+    print(f"  Wins:       {scores['X']}")
+    print(f"  Win Rate:   {get_win_rate('X', scores):.1f}%")
+    print(f"  Best Streak:{statistics['X_best_streak']}")
+
+    print()
+    print(f"{player_o} (O)")
+    print(f"  Wins:       {scores['O']}")
+    print(f"  Win Rate:   {get_win_rate('O', scores):.1f}%")
+    print(f"  Best Streak:{statistics['O_best_streak']}")
+
+    print()
+    print("OVERALL")
+    print("-" * 65)
+    print(f"Games Played:       {total_games}")
+    print(f"Total Moves:        {statistics['total_moves']}")
+    print(f"Games Quit:         {statistics['games_quit']}")
+    print(f"Achievements:       {len(data['achievements'])}")
+    print(f"Challenges:         {len(data['challenges_completed'])}")
+
+    if data["fastest_win"] is not None:
+        print(f"Fastest Win:        {data['fastest_win']:.2f} seconds")
+
+    if data["longest_game"] > 0:
+        print(f"Longest Game:       {data['longest_game']} moves")
+
+    print("=" * 65)
+    print()
+
+
+def display_achievements(data):
+    """Display achievement progress."""
+    achievements = [
+        ("FIRST_WIN", "First Victory", "Win your first game."),
+        ("THREE_WINS", "Triple Threat", "Win 3 games."),
+        ("FIVE_WINS", "Five Star Player", "Win 5 games."),
+        ("TEN_GAMES", "Veteran", "Play 10 completed games."),
+        ("STREAK_3", "On Fire", "Reach a 3-game win streak."),
+        ("STREAK_5", "Unstoppable", "Reach a 5-game win streak."),
+        ("HARD_AI", "AI Slayer", "Defeat the Hard computer."),
+        ("PERFECT_GAME", "Perfect Game", "Win without letting the opponent win."),
+        ("QUICK_WIN", "Speed Player", "Win a game in 5 moves or fewer.")
+    ]
+
+    print()
+    print("=" * 65)
+    print("                    ACHIEVEMENTS")
+    print("=" * 65)
+
+    unlocked = set(data["achievements"])
+
+    for code, name, description in achievements:
+        if code in unlocked:
+            status = "[UNLOCKED]"
+        else:
+            status = "[LOCKED]  "
+
+        print()
+        print(f"{status} {name}")
+        print(f"          {description}")
+
+    print()
+    print(f"Unlocked: {len(unlocked)}/{len(achievements)}")
+    print("=" * 65)
+    print()
+
+
+def unlock_achievement(data, code, name):
+    """Unlock an achievement if it has not already been unlocked."""
+    if code not in data["achievements"]:
+        data["achievements"].append(code)
+
+        print()
+        print("=" * 65)
+        print("                 ACHIEVEMENT UNLOCKED!")
+        print("=" * 65)
+        print()
+        print(f"                    {name}")
+        print()
+        print("=" * 65)
+        print()
+
+        return True
+
+    return False
+
+
+def check_achievements(
+    data,
+    scores,
+    statistics,
+    result,
+    moves,
+    difficulty=None,
+    total_games=0,
+    elapsed_time=None
+):
+    """Check whether the latest game unlocked achievements."""
+    changed = False
+
+    if result in ("X", "O"):
+        winner_wins = scores[result]
+
+        if winner_wins >= 1:
+            changed |= unlock_achievement(
+                data,
+                "FIRST_WIN",
+                "First Victory"
+            )
+
+        if winner_wins >= 3:
+            changed |= unlock_achievement(
+                data,
+                "THREE_WINS",
+                "Triple Threat"
+            )
+
+        if winner_wins >= 5:
+            changed |= unlock_achievement(
+                data,
+                "FIVE_WINS",
+                "Five Star Player"
+            )
+
+        if moves <= 5:
+            changed |= unlock_achievement(
+                data,
+                "QUICK_WIN",
+                "Speed Player"
+            )
+
+        if statistics[f"{result}_best_streak"] >= 3:
+            changed |= unlock_achievement(
+                data,
+                "STREAK_3",
+                "On Fire"
+            )
+
+        if statistics[f"{result}_best_streak"] >= 5:
+            changed |= unlock_achievement(
+                data,
+                "STREAK_5",
+                "Unstoppable"
+            )
+
+        if moves == 5:
+            changed |= unlock_achievement(
+                data,
+                "PERFECT_GAME",
+                "Perfect Game"
+            )
+
+        if difficulty == "Hard" and result == "X":
+            changed |= unlock_achievement(
+                data,
+                "HARD_AI",
+                "AI Slayer"
+            )
+
+    if total_games >= 10:
+        changed |= unlock_achievement(
+            data,
+            "TEN_GAMES",
+            "Veteran"
+        )
+
+    if changed:
+        save_game_data(data)
+
+
+def display_challenges(data):
+    """Display available challenges."""
+    challenges = [
+        (
+            "WIN_5_MOVES",
+            "Speed Challenge",
+            "Win a game in 5 moves or fewer."
+        ),
+        (
+            "WIN_DIAGONAL",
+            "Diagonal Master",
+            "Win using a diagonal."
+        ),
+        (
+            "WIN_CENTER",
+            "Center Control",
+            "Win a game after using position 5."
+        ),
+        (
+            "NO_CENTER",
+            "Outside the Box",
+            "Win without using position 5."
+        ),
+        (
+            "BEAT_HARD",
+            "Hard Mode Champion",
+            "Defeat the Hard AI."
+        ),
+        (
+            "WIN_STREAK_3",
+            "Three in a Row",
+            "Reach a 3-game winning streak."
+        )
+    ]
+
+    print()
+    print("=" * 65)
+    print("                      CHALLENGES")
+    print("=" * 65)
+
+    completed = set(data["challenges_completed"])
+
+    for code, name, description in challenges:
+        status = "[DONE]" if code in completed else "[ ]"
+
+        print()
+        print(f"{status} {name}")
+        print(f"     {description}")
+
+    print()
+    print(
+        f"Completed: {len(completed)}/{len(challenges)}"
+    )
+    print("=" * 65)
+    print()
+
+
+def complete_challenge(data, code, name):
+    """Mark a challenge as completed."""
+    if code not in data["challenges_completed"]:
+        data["challenges_completed"].append(code)
+
+        print()
+        print("=" * 65)
+        print("                    CHALLENGE COMPLETE!")
+        print("=" * 65)
+        print()
+        print(f"                    {name}")
+        print()
+        print("=" * 65)
+        print()
+
+        save_game_data(data)
+
+
+def display_match_history(data):
+    """Display previous completed games."""
+    print()
+    print("=" * 75)
+    print("                       MATCH HISTORY")
+    print("=" * 75)
+
+    history = data["match_history"]
+
+    if not history:
+        print()
+        print("No completed matches yet.")
+    else:
+        for match in history[-20:]:
+            print()
+            print(
+                f"Game #{match['game_number']} | "
+                f"{match['player_x']} vs {match['player_o']}"
+            )
+            print(
+                f"Mode: {match['mode']} | "
+                f"Result: {match['result']}"
+            )
+            print(
+                f"Moves: {match['moves']} | "
+                f"Time: {match['time']:.2f}s"
+            )
+
+            if match.get("difficulty"):
+                print(
+                    f"Difficulty: {match['difficulty']}"
+                )
+
+            print(
+                f"Date: {match['date']}"
+            )
+
+    print()
+    print("=" * 75)
+    print()
+
+
+def display_leaderboard(player_x, player_o, scores, statistics):
+    """Display a simple leaderboard."""
+    players = [
+        {
+            "name": player_x,
+            "wins": scores["X"],
+            "streak": statistics["X_best_streak"]
+        },
+        {
+            "name": player_o,
+            "wins": scores["O"],
+            "streak": statistics["O_best_streak"]
+        }
+    ]
+
+    players.sort(
+        key=lambda player: (
+            player["wins"],
+            player["streak"]
+        ),
+        reverse=True
+    )
+
+    print()
+    print("=" * 65)
+    print("                       LEADERBOARD")
+    print("=" * 65)
+
+    print()
+    print(
+        f"{'Rank':<8}"
+        f"{'Player':<25}"
+        f"{'Wins':<10}"
+        f"{'Best Streak':<15}"
+    )
+    print("-" * 65)
+
+    for index, player in enumerate(players, start=1):
+        print(
+            f"{index:<8}"
+            f"{player['name']:<25}"
+            f"{player['wins']:<10}"
+            f"{player['streak']:<15}"
+        )
+
+    print("=" * 65)
+    print()
+
+
+def display_tournament_rules():
+    """Explain tournament mode."""
+    print()
+    print("=" * 65)
+    print("                    TOURNAMENT MODE")
+    print("=" * 65)
+
+    print()
+    print("Tournament format:")
+    print()
+    print("1. Choose Best of 3, 5, or 7.")
+    print("2. Each game is played normally.")
+    print("3. The first player to reach the required")
+    print("   number of wins becomes champion.")
+    print("4. Draws do not count as a win.")
+    print()
+    print("This mode is best played with Player vs Player.")
+    print()
+    print("=" * 65)
+    print()
+
+
+def run_tournament(player_x, player_o):
+    """Run a Best-of tournament using the original game system."""
+    while True:
+        print()
+        print("=" * 65)
+        print("                    TOURNAMENT MODE")
+        print("=" * 65)
+        print("1. Best of 3")
+        print("2. Best of 5")
+        print("3. Best of 7")
+        print("4. Back")
+        print("=" * 65)
+
+        choice = input("Choose an option: ").strip()
+
+        if choice == "4":
+            return
+
+        if choice == "1":
+            games_needed = 2
+        elif choice == "2":
+            games_needed = 3
+        elif choice == "3":
+            games_needed = 4
+        else:
+            print("Invalid option.")
+            continue
+
+        tournament_x = 0
+        tournament_o = 0
+        tournament_draws = 0
+
+        print()
+        print(
+            f"Starting tournament: first to "
+            f"{games_needed} wins."
+        )
+
+        while (
+            tournament_x < games_needed
+            and tournament_o < games_needed
+        ):
+            result, moves = play_game(
+                player_x,
+                player_o,
+                "PvP",
+                None,
+                random.choice(["X", "O"])
+            )
+
+            if result == "quit":
+                print("Tournament ended.")
+                return
+
+            if result == "restart":
+                continue
+
+            if result == "X":
+                tournament_x += 1
+            elif result == "O":
+                tournament_o += 1
+            else:
+                tournament_draws += 1
+
+            print()
+            print("-" * 65)
+            print("TOURNAMENT SCORE")
+            print("-" * 65)
+            print(f"{player_x}: {tournament_x}")
+            print(f"{player_o}: {tournament_o}")
+            print(f"Draws: {tournament_draws}")
+            print("-" * 65)
+
+        print()
+        print("=" * 65)
+        print("                  TOURNAMENT COMPLETE")
+        print("=" * 65)
+
+        if tournament_x == games_needed:
+            print()
+            print(f"CHAMPION: {player_x}")
+        else:
+            print()
+            print(f"CHAMPION: {player_o}")
+
+        print()
+        print("=" * 65)
+        print()
+
+        return
+
+
+def display_game_center_menu():
+    """Display the new Game Center menu."""
+    print()
+    print("=" * 65)
+    print("                    GAME CENTER")
+    print("=" * 65)
+    print("1. Achievements")
+    print("2. Challenges")
+    print("3. Match History")
+    print("4. Leaderboard")
+    print("5. Advanced Statistics")
+    print("6. Tournament Mode")
+    print("7. Back")
+    print("=" * 65)
+
+
+def game_center(
+    player_x,
+    player_o,
+    scores,
+    statistics,
+    data
+):
+    """Open the new Game Center."""
+    while True:
+        display_game_center_menu()
+
+        choice = input("Choose an option: ").strip()
+
+        if choice == "1":
+            display_achievements(data)
+
+        elif choice == "2":
+            display_challenges(data)
+
+        elif choice == "3":
+            display_match_history(data)
+
+        elif choice == "4":
+            display_leaderboard(
+                player_x,
+                player_o,
+                scores,
+                statistics
+            )
+
+        elif choice == "5":
+            display_game_center_stats(
+                player_x,
+                player_o,
+                scores,
+                statistics,
+                data
+            )
+
+        elif choice == "6":
+            run_tournament(
+                player_x,
+                player_o
+            )
+
+        elif choice == "7":
+            return
+
+        else:
+            print()
+            print("Invalid option.")
+            print()
+
+
+def update_new_feature_records(
+    data,
+    player_x,
+    player_o,
+    mode,
+    difficulty,
+    result,
+    moves,
+    elapsed_time
+):
+    """Save the completed game into the new systems."""
+    if result in ("X", "O"):
+        if result == "X":
+            winner = player_x
+        else:
+            winner = player_o
+    else:
+        winner = "Draw"
+
+    total_games = len(data["match_history"]) + 1
+
+    if elapsed_time is None:
+        elapsed_time = 0
+
+    match = {
+        "game_number": total_games,
+        "player_x": player_x,
+        "player_o": player_o,
+        "mode": mode,
+        "difficulty": difficulty,
+        "result": winner,
+        "moves": moves,
+        "time": elapsed_time,
+        "date": datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+    }
+
+    data["match_history"].append(match)
+
+    # Keep only the latest 100 matches.
+    if len(data["match_history"]) > 100:
+        data["match_history"] = data["match_history"][-100:]
+
+    if result in ("X", "O"):
+        if (
+            data["fastest_win"] is None
+            or elapsed_time < data["fastest_win"]
+        ):
+            data["fastest_win"] = elapsed_time
+
+    if moves > data["longest_game"]:
+        data["longest_game"] = moves
+
+    save_game_data(data)
+
+
+def check_new_challenges(
+    data,
+    result,
+    moves,
+    move_history,
+    difficulty,
+    statistics
+):
+    """Check the new challenge system."""
+    if result not in ("X", "O"):
+        return
+
+    positions = [
+        move["position"]
+        for move in move_history
+        if move["symbol"] == result
+    ]
+
+    if moves <= 5:
+        complete_challenge(
+            data,
+            "WIN_5_MOVES",
+            "Speed Challenge"
+        )
+
+    winning_line = get_winning_line(
+        [
+            result if position in positions else " "
+            for position in range(1, 10)
+        ],
+        result
+    )
+
+    if winning_line is not None:
+        if (
+            set(winning_line) == {0, 4, 8}
+            or set(winning_line) == {2, 4, 6}
+        ):
+            complete_challenge(
+                data,
+                "WIN_DIAGONAL",
+                "Diagonal Master"
+            )
+
+    if 5 in positions:
+        complete_challenge(
+            data,
+            "WIN_CENTER",
+            "Center Control"
+        )
+    else:
+        complete_challenge(
+            data,
+            "NO_CENTER",
+            "Outside the Box"
+        )
+
+    if difficulty == "Hard" and result == "X":
+        complete_challenge(
+            data,
+            "BEAT_HARD",
+            "Hard Mode Champion"
+        )
+
+    if statistics[f"{result}_best_streak"] >= 3:
+        complete_challenge(
+            data,
+            "WIN_STREAK_3",
+            "Three in a Row"
+        )
+
+
+def play_game_with_timer(
+    player_x,
+    player_o,
+    mode,
+    difficulty,
+    first_player
+):
+    """
+    Wrapper around the original play_game function.
+
+    The original game logic is still used. This wrapper adds
+    timing and Game Center recording.
+    """
+    start_time = time.time()
+
+    result, moves = play_game(
+        player_x,
+        player_o,
+        mode,
+        difficulty,
+        first_player
+    )
+
+    elapsed_time = time.time() - start_time
+
+    return result, moves, elapsed_time
+
+
+def enhanced_main():
+    """
+    New launcher.
+
+    All original game functions remain above.
+    This launcher adds the Game Center features.
+    """
+    display_title()
+
+    player_x, player_o = get_player_names()
+
+    scores = {
+        "X": 0,
+        "O": 0,
+        "Draws": 0
+    }
+
+    statistics = {
+        "X_moves": 0,
+        "O_moves": 0,
+        "total_moves": 0,
+        "X_streak": 0,
+        "O_streak": 0,
+        "X_best_streak": 0,
+        "O_best_streak": 0,
+        "games_quit": 0
+    }
+
+    total_moves = 0
+    data = load_game_data()
+
+    while True:
+        display_menu()
+
+        print("12. Game Center")
+
+        print("=" * 55)
+
+        choice = input(
+            "Choose an option: "
+        ).strip()
+
+        if choice == "1":
+            mode = select_game_mode()
+
+            if mode is None:
+                continue
+
+            difficulty = None
+
+            if mode == "PvC":
+                difficulty = select_difficulty()
+
+                print()
+                print(
+                    f"Difficulty selected: {difficulty}"
+                )
+
+            first_player = select_first_player()
+
+            if first_player == "X":
+                print()
+                print(
+                    f"{player_x} will go first."
+                )
+            else:
+                print()
+                print(
+                    f"{player_o} will go first."
+                )
+
+            while True:
+                result, moves, elapsed_time = (
+                    play_game_with_timer(
+                        player_x,
+                        player_o,
+                        mode,
+                        difficulty,
+                        first_player
+                    )
+                )
+
+                if result == "restart":
+                    print()
+                    print("Starting a new game...")
+                    time.sleep(0.7)
+                    continue
+
+                if result == "quit":
+                    statistics["games_quit"] += 1
+                    break
+
+                total_moves += moves
+                statistics["total_moves"] += moves
+
+                if result == "X":
+                    scores["X"] += 1
+
+                    statistics["X_moves"] += moves
+
+                    update_streaks(
+                        statistics,
+                        "X"
+                    )
+
+                elif result == "O":
+                    scores["O"] += 1
+
+                    statistics["O_moves"] += moves
+
+                    update_streaks(
+                        statistics,
+                        "O"
+                    )
+
+                elif result == "Draw":
+                    scores["Draws"] += 1
+
+                    update_streaks(
+                        statistics,
+                        "Draw"
+                    )
+
+                update_new_feature_records(
+                    data,
+                    player_x,
+                    player_o,
+                    mode,
+                    difficulty,
+                    result,
+                    moves,
+                    elapsed_time
+                )
+
+                total_games = (
+                    scores["X"]
+                    + scores["O"]
+                    + scores["Draws"]
+                )
+
+                check_achievements(
+                    data,
+                    scores,
+                    statistics,
+                    result,
+                    moves,
+                    difficulty,
+                    total_games,
+                    elapsed_time
+                )
+
+                # Recreate move history is not available after
+                # play_game returns, so the main achievement
+                # system handles the general achievements here.
+
+                print()
+                print(
+                    f"Game time: {elapsed_time:.2f} seconds"
+                )
+
+                display_scores(
+                    player_x,
+                    player_o,
+                    scores
+                )
+
+                if not play_again():
+                    break
+
+                first_player = random.choice(
+                    ["X", "O"]
+                )
+
+        elif choice == "2":
+            display_rules()
+
+        elif choice == "3":
+            display_how_to_play()
+
+        elif choice == "4":
+            display_scores(
+                player_x,
+                player_o,
+                scores
+            )
+
+        elif choice == "5":
+            display_statistics(
+                player_x,
+                player_o,
+                scores,
+                total_moves
+            )
+
+        elif choice == "6":
+            player_x, player_o = get_player_names()
+
+            print()
+            print(
+                "Player names updated successfully."
+            )
+            print()
+
+        elif choice == "7":
+            confirm = input(
+                "Are you sure you want "
+                "to reset scores? (Y/N): "
+            ).strip().upper()
+
+            if confirm == "Y":
+                reset_scores(scores)
+                reset_extended_statistics(
+                    statistics
+                )
+                total_moves = 0
+
+                print(
+                    "Current session scores reset."
+                )
+
+            else:
+                print()
+                print("Reset cancelled.")
+                print()
+
+        elif choice == "8":
+            display_move_guide()
+
+        elif choice == "9":
+            display_about()
+
+        elif choice == "10":
+            display_extended_statistics(
+                player_x,
+                player_o,
+                scores,
+                statistics
+            )
+
+        elif choice == "11":
+            print()
+            print("=" * 55)
+            print("             THANK YOU FOR PLAYING!")
+            print()
+            print("                  TIC TAC TOE")
+            print("=" * 55)
+            print()
+
+            save_game_data(data)
+            break
+
+        elif choice == "12":
+            game_center(
+                player_x,
+                player_o,
+                scores,
+                statistics,
+                data
+            )
+
+        else:
+            print()
+            print("Invalid option.")
+            print(
+                "Please choose a number from 1 to 12."
+            )
+            print()
+
+
+# ==========================================================
+# RUN ENHANCED PROGRAM
+# ==========================================================
+
 if __name__ == "__main__":
-    main()
+    enhanced_main()
