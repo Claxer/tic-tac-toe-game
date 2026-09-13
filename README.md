@@ -1,8 +1,8 @@
 # Tic Tac Toe
 
-A **Tic Tac Toe game built with Python**. This project started as a beginner-friendly terminal game and was expanded with additional gameplay features, computer difficulty levels, statistics, move tracking, and a **Minimax-powered Hard AI**.
+A **Tic Tac Toe game built with Python**. This project started as a beginner-friendly terminal game and was expanded into a more complete Tic Tac Toe game system with computer difficulty levels, statistics, achievements, challenges, match history, tournaments, leaderboards, game timers, and a **Minimax-powered Hard AI**.
 
-The project is designed to practice Python fundamentals while also introducing more advanced concepts such as **recursion, algorithms, game-state evaluation, and basic statistics tracking**.
+The project is designed to practice Python fundamentals while also introducing more advanced concepts such as **recursion, algorithms, game-state evaluation, file handling, JSON data storage, statistics tracking, and game management**.
 
 ---
 
@@ -20,38 +20,48 @@ A winning line can be:
 
 If all nine spaces are filled and nobody gets three in a row, the game ends in a **draw**.
 
-This project allows the player to play against another person or against a computer with multiple difficulty levels.
+The game allows players to compete against another person or against a computer with multiple difficulty levels.
+
+The expanded version also includes a **Game Center** where players can view achievements, challenges, match history, leaderboards, advanced statistics, and tournament options.
 
 ---
 
-## Features
+# Features
 
-### Game Modes
+## Game Modes
 
-The game currently supports:
+The game supports:
 
 * **Player vs Player**
 * **Player vs Computer**
 
-In Player vs Player mode, two people can play against each other.
+### Player vs Player
 
-In Player vs Computer mode, the player competes against an AI opponent.
+Two players can compete against each other on the same computer.
+
+Each player can enter their own name and choose their moves.
+
+### Player vs Computer
+
+A player can compete against the computer.
+
+The computer has three different difficulty levels.
 
 ---
 
-### Computer Difficulty
+# Computer Difficulty
 
-The computer has three difficulty levels:
+## Easy
 
-#### Easy
+The Easy AI chooses randomly from the available board positions.
 
-The computer chooses from the available positions randomly.
+This makes it suitable for beginners and creates a simple, unpredictable opponent.
 
-This mode is designed for a simple and unpredictable opponent.
+---
 
-#### Medium
+## Medium
 
-The computer uses basic game strategy.
+The Medium AI uses basic strategy.
 
 It can:
 
@@ -61,17 +71,21 @@ It can:
 * Prefer corners
 * Choose another available position when necessary
 
-#### Hard
-
-The Hard difficulty uses the **Minimax algorithm**.
-
-Instead of simply choosing a random or strategically obvious move, the computer evaluates possible future game states to determine the strongest move.
-
-This makes the Hard AI extremely difficult to beat and allows it to properly analyze the possible outcomes of the game.
+This makes the computer more strategic than Easy mode without being unbeatable.
 
 ---
 
-## Minimax Algorithm
+## Hard
+
+The Hard AI uses the **Minimax algorithm**.
+
+The computer analyzes possible future game states before deciding which move to make.
+
+This makes the Hard AI extremely difficult to beat.
+
+---
+
+# Minimax Algorithm
 
 The Hard AI uses a recursive **Minimax algorithm**.
 
@@ -82,7 +96,8 @@ The computer attempts to:
 * Maximize its chance of winning
 * Minimize the player's chance of winning
 * Recognize possible draws
-* Evaluate future moves before making a decision
+* Evaluate future moves
+* Select the strongest available move
 
 The scoring system considers:
 
@@ -91,31 +106,33 @@ The scoring system considers:
 * Draws
 * How quickly a win can be achieved
 
-This feature introduces an important programming concept called **recursion**, where a function calls itself to solve smaller versions of the same problem.
+This introduces the programming concept of **recursion**, where a function calls itself to evaluate smaller versions of the same problem.
 
 ---
 
-## Player Names
+# Player Names
 
 Players can enter their own names before starting the game.
 
-For example:
+Example:
 
 ```text
 Player X name: Jose
 Player O name: Mark
 ```
 
-The names are then displayed throughout the game and scoreboard.
+The names are displayed throughout the game and scoreboard.
 
-If no name is entered, the game automatically uses:
+If no name is entered, the program automatically uses:
 
-* Player X
-* Player O
+```text
+Player X
+Player O
+```
 
 ---
 
-## Position System
+# Position System
 
 The game uses numbers from **1 to 9** to represent the board.
 
@@ -127,7 +144,7 @@ The game uses numbers from **1 to 9** to represent the board.
           7   |   8   |   9
 ```
 
-For example, entering:
+For example:
 
 ```text
 5
@@ -137,11 +154,11 @@ places the player's symbol in the center.
 
 ---
 
-## Game Commands
+# Game Commands
 
 During a player's turn, additional commands are available.
 
-### Make a Move
+## Make a Move
 
 Enter a number from:
 
@@ -149,9 +166,11 @@ Enter a number from:
 1 - 9
 ```
 
-to select an empty board position.
+to select an empty position.
 
-### Undo
+---
+
+## Undo
 
 Enter:
 
@@ -165,7 +184,9 @@ In Player vs Player mode, the most recent move is removed.
 
 In Player vs Computer mode, the most recent player/computer turn can be undone so the player can make another decision.
 
-### Move History
+---
+
+## Move History
 
 Enter:
 
@@ -183,7 +204,9 @@ Example:
 3. Jose (X) - Position 9
 ```
 
-### Restart
+---
+
+## Restart
 
 Enter:
 
@@ -193,9 +216,11 @@ R
 
 to restart the current game.
 
-The player is asked to confirm before the game restarts.
+The program asks for confirmation before restarting.
 
-### Quit
+---
+
+## Quit
 
 Enter:
 
@@ -207,9 +232,9 @@ to leave the current game and return to the main menu.
 
 ---
 
-## Move History
+# Move History
 
-The game now records the moves made during each round.
+The game records the moves made during each round.
 
 Each move stores:
 
@@ -217,29 +242,29 @@ Each move stores:
 * Player symbol
 * Board position
 
-This makes it easier to review how the game was played.
+The move history can be viewed during the game and is also displayed when a game ends.
 
-The move history is also displayed after a game ends.
+This allows players to review how the match was played.
 
 ---
 
-## Winning Line Detection
+# Winning Line Detection
 
-When a player wins, the game identifies the three positions that created the winning combination.
+When a player wins, the game identifies the three positions responsible for the winning combination.
 
-For example:
+Example:
 
 ```text
 Winning positions: 1, 2, 3
 ```
 
-This helps clearly show how the player won.
+This makes it clear how the winning line was created.
 
 ---
 
-## Scoreboard
+# Scoreboard
 
-The game keeps track of the results of completed games.
+The game tracks completed matches.
 
 The scoreboard displays:
 
@@ -262,9 +287,9 @@ The game also calculates the percentage of games won by each player.
 
 ---
 
-## Statistics
+# Statistics
 
-The game includes a statistics system that tracks gameplay information.
+The game contains a statistics system that tracks gameplay information.
 
 Statistics include:
 
@@ -274,23 +299,25 @@ Statistics include:
 * Draws
 * Total moves
 * Average moves per game
-
-The average number of moves is calculated based on the total number of moves made across completed games.
+* Player move totals
+* Current win streaks
+* Best win streaks
+* Games quit
 
 ---
 
-## Win Streaks
+# Win Streaks
 
-The expanded version also tracks player win streaks.
+The game tracks consecutive wins.
 
-The game records:
+It records:
 
 * Current Player X streak
 * Current Player O streak
 * Best Player X streak
 * Best Player O streak
 
-For example:
+Example:
 
 ```text
 Jose Current Streak: 3
@@ -300,79 +327,294 @@ Jose Best Streak:    4
 Mark Best Streak:    2
 ```
 
-A player's streak resets when the other player wins or when a draw occurs.
+A player's current streak resets when the other player wins or when a draw occurs.
 
 ---
 
-## Move Statistics
+# Game Center
 
-The game tracks how many moves each player has made.
+The newest version introduces a dedicated **Game Center**.
 
-The extended statistics include:
-
-```text
-Player X Moves
-Player O Moves
-Total Moves
-```
-
-This provides additional information about how games are played.
-
----
-
-## Round Tracking
-
-The game keeps track of the current round number while the program is running.
-
-This helps organize multiple games played during the same session.
-
----
-
-## Extended Statistics
-
-An additional statistics section provides more detailed information.
+The Game Center provides additional systems outside the normal game.
 
 It includes:
 
-* Total games
-* Player X wins
-* Player O wins
-* Draws
-* Player X moves
-* Player O moves
-* Total moves
-* Current win streaks
-* Best win streaks
-* Games quit
-* Average moves
+* Achievements
+* Challenges
+* Match History
+* Leaderboard
+* Tournament Mode
+* Advanced Statistics
+* Game performance records
 
-This makes the project more than just a simple Tic Tac Toe game and introduces basic data tracking.
+The Game Center makes the project feel more like a complete game application instead of only a basic Tic Tac Toe program.
 
 ---
 
-## Reset Scores
+# Achievements
 
-The main menu includes an option to reset the game's statistics.
+The game includes an **Achievement System**.
 
-When confirmed, the game resets:
+Achievements are unlocked by completing specific actions or milestones.
+
+Examples include:
+
+* Winning your first game
+* Reaching multiple wins
+* Building a win streak
+* Playing multiple games
+* Winning difficult matches
+* Completing special challenges
+
+When an achievement is unlocked, the game displays a special notification.
+
+Example:
+
+```text
+=======================================================
+              ACHIEVEMENT UNLOCKED!
+=======================================================
+```
+
+Achievements provide additional goals for players beyond simply winning individual matches.
+
+---
+
+# Challenges
+
+The game includes a **Challenge System**.
+
+Challenges give players additional objectives to complete while playing.
+
+Examples can include goals related to:
+
+* Winning games
+* Winning within a certain number of moves
+* Creating specific winning patterns
+* Reaching certain milestones
+* Defeating difficult computer opponents
+
+Completed challenges are tracked by the Game Center.
+
+Example:
+
+```text
+=======================================================
+                CHALLENGE COMPLETE!
+=======================================================
+```
+
+This gives players additional reasons to keep playing and experimenting with different strategies.
+
+---
+
+# Match History
+
+The game keeps a record of completed matches.
+
+Match history can show information such as:
+
+* Match number
+* Players
+* Game mode
+* Winner
+* Result
+* Number of moves
+* Difficulty when playing against the computer
+* Game duration
+
+Example:
+
+```text
+Game #1
+Jose vs Computer
+Result: Jose Wins
+Moves: 7
+```
+
+This allows players to review previous games.
+
+---
+
+# Game Timer
+
+The expanded version includes a **game timer**.
+
+The timer records how long a game takes.
+
+The game can use this information to track performance records such as:
+
+* Fastest win
+* Game duration
+* Longest games by moves
+
+Example:
+
+```text
+Game Time: 18.42 seconds
+```
+
+This adds another way for players to challenge themselves.
+
+---
+
+# Fastest Win
+
+The Game Center keeps track of the player's fastest recorded winning game.
+
+Example:
+
+```text
+Fastest Win: 12.45 seconds
+```
+
+Players can attempt to beat their previous record.
+
+---
+
+# Longest Game
+
+The program also tracks the longest completed game based on the number of moves.
+
+Example:
+
+```text
+Longest Game: 9 moves
+```
+
+This can be useful for comparing different matches and seeing how long games typically last.
+
+---
+
+# Persistent Game Center Data
+
+The newest version can save Game Center information to a JSON file.
+
+The save file is:
+
+```text
+tic_tac_toe_data.json
+```
+
+This allows selected Game Center information to remain available even after the program is closed.
+
+The program can load previously saved data when it starts and save updated information as the player progresses.
+
+---
+
+# JSON Data Storage
+
+The project uses Python's built-in `json` module to handle saved Game Center information.
+
+Example:
+
+```python
+import json
+```
+
+JSON is used because it provides a simple way to store structured data in a readable file.
+
+This introduces another practical Python concept beyond the original game logic.
+
+---
+
+# Leaderboard
+
+The Game Center includes a **Leaderboard** system.
+
+The leaderboard can be used to compare player performance.
+
+Information can include:
+
+* Player names
+* Wins
+* Losses
+* Draws
+* Win rate
+* Best streak
+* Total games
+
+This gives the game a more competitive feeling.
+
+---
+
+# Tournament Mode
+
+The expanded version includes a **Tournament Mode**.
+
+Players can select a tournament format such as:
+
+* Best of 3
+* Best of 5
+* Best of 7
+
+The game keeps track of tournament wins until one player reaches the required number of victories.
+
+For example, in a Best of 5 tournament:
+
+```text
+Player X: 3
+Player O: 1
+
+Player X is the Tournament Champion!
+```
+
+Tournament Mode turns multiple individual games into one larger competition.
+
+---
+
+# Advanced Statistics
+
+The Game Center provides additional statistics beyond the original scoreboard.
+
+It can track:
+
+* Total games
+* Total wins
+* Total draws
+* Total moves
+* Average moves
+* Current streak
+* Best streak
+* Games quit
+* Fastest win
+* Longest game
+
+This allows players to examine their overall performance.
+
+---
+
+# Round Tracking
+
+The program keeps track of the round number while the game session is active.
+
+This helps organize multiple games during the same session.
+
+---
+
+# Reset Scores
+
+The main menu contains an option to reset the current game statistics.
+
+When confirmed, the program can reset information such as:
 
 * Player X wins
 * Player O wins
 * Draws
 * Move statistics
-* Win streaks
+* Current streaks
 * Best streaks
 * Games quit
 * Total moves
 * Round counter
 
-A confirmation is required before resetting the data.
+A confirmation is required before resetting the information.
 
 ---
 
-## Rules
+# Rules
 
-The game follows the standard Tic Tac Toe rules:
+The game follows standard Tic Tac Toe rules:
 
 1. The game uses a 3×3 board.
 2. Players take turns placing X or O.
@@ -383,9 +625,11 @@ The game follows the standard Tic Tac Toe rules:
 
 ---
 
-## Main Menu
+# Main Menu
 
-The expanded main menu contains:
+The main menu provides access to the original game systems and the expanded Game Center features.
+
+The original menu includes options such as:
 
 ```text
 1. Start Game
@@ -401,39 +645,39 @@ The expanded main menu contains:
 11. Exit
 ```
 
-This gives the player access to the game's different systems without needing to restart the program.
+The expanded version also provides access to the additional Game Center systems.
 
 ---
 
-## Move Guide
+# Move Guide
 
 The Move Guide explains the different types of board positions.
 
-### Center
+## Center
 
 ```text
 5
 ```
 
-### Corners
+## Corners
 
 ```text
 1, 3, 7, 9
 ```
 
-### Sides
+## Sides
 
 ```text
 2, 4, 6, 8
 ```
 
-This is especially useful for understanding the strategies used by the Medium and Hard computer opponents.
+This is useful for understanding basic Tic Tac Toe strategy and the decisions used by the Medium and Hard AI.
 
 ---
 
-## About Section
+# About Section
 
-The game includes an About section explaining the project and the Python concepts used to create it.
+The game includes an About section describing the project and the Python concepts used.
 
 The project demonstrates:
 
@@ -447,15 +691,18 @@ The project demonstrates:
 * Recursion
 * Algorithms
 * Game-state evaluation
-* Statistics tracking
+* Statistics
+* File handling
+* JSON data storage
+* Game management
 
 ---
 
-## Python Concepts Used
+# Python Concepts Used
 
-### Functions
+## Functions
 
-The project is divided into multiple functions.
+The project is divided into many functions.
 
 Examples include:
 
@@ -467,21 +714,25 @@ play_game()
 hard_computer_move()
 ```
 
-This keeps different parts of the program organized.
+Functions allow different parts of the program to be separated and organized.
 
-### Lists
+---
 
-The board is stored as a Python list.
+## Lists
+
+The Tic Tac Toe board is stored as a Python list.
 
 ```python
 board = [" " for _ in range(9)]
 ```
 
-Each index represents a position on the Tic Tac Toe board.
+Each index represents one position on the board.
 
-### Dictionaries
+---
 
-Dictionaries are used to store information such as scores and move history.
+## Dictionaries
+
+Dictionaries are used to store information such as scores, statistics, move history, and saved game data.
 
 Example:
 
@@ -493,7 +744,9 @@ scores = {
 }
 ```
 
-### Loops
+---
+
+## Loops
 
 Loops are used for:
 
@@ -502,20 +755,29 @@ Loops are used for:
 * Input validation
 * Checking available moves
 * Searching for winning combinations
+* Tournament games
+* Repeated challenges and game systems
 
-### Conditional Statements
+---
+
+## Conditional Statements
 
 `if`, `elif`, and `else` statements control the game's logic.
 
-They are used to determine:
+They determine:
 
 * Who won
 * Whether the board is full
-* Which player's turn it is
-* Which difficulty is selected
+* Whose turn it is
+* Which difficulty was selected
 * Whether a move is valid
+* Whether an achievement has been unlocked
+* Whether a challenge has been completed
+* Whether a tournament has ended
 
-### Random Module
+---
+
+## Random Module
 
 The `random` module is used by the Easy AI and for random first-player selection.
 
@@ -523,45 +785,98 @@ The `random` module is used by the Easy AI and for random first-player selection
 import random
 ```
 
-### Recursion
+---
+
+## Time Module
+
+The `time` module is used for:
+
+* Computer thinking delays
+* Game timing
+* Measuring game duration
+
+```python
+import time
+```
+
+---
+
+## JSON
+
+The `json` module is used to save and load Game Center information.
+
+```python
+import json
+```
+
+The saved information is stored in:
+
+```text
+tic_tac_toe_data.json
+```
+
+---
+
+## Recursion
 
 The Hard AI uses recursion through the Minimax algorithm.
 
 The algorithm repeatedly evaluates possible future board states until it reaches a winning, losing, or drawing position.
 
-### Input Validation
+---
 
-The program checks whether the player's input is valid before making a move.
+## Algorithms
 
-It prevents:
+The project uses algorithms to determine:
 
-* Invalid numbers
-* Letters when a position is expected
-* Selecting positions outside 1–9
-* Selecting occupied spaces
+* Winning combinations
+* Available moves
+* Winning moves
+* Blocking moves
+* Best AI decisions
+* Tournament results
+* Player statistics
+* Achievement progress
 
 ---
 
-## Technologies Used
+## Input Validation
+
+The program checks user input before performing actions.
+
+It prevents problems such as:
+
+* Invalid numbers
+* Invalid menu selections
+* Selecting positions outside 1–9
+* Selecting occupied spaces
+* Invalid commands
+
+---
+
+# Technologies Used
 
 * **Python**
 * Python Standard Library
 * `random`
 * `time`
+* `json`
 
 No external Python packages are required.
 
 ---
 
-## Project Structure
+# Project Structure
 
 The project can be kept as a simple Python project:
 
 ```text
 Tic Tac Toe/
 │
-├── main.py
+├──python-version
+    ├── game.py
 │
+├── LICENSE
 └── README.md
 ```
 
@@ -571,21 +886,25 @@ The main game logic is contained in:
 main.py
 ```
 
+The JSON file stores persistent Game Center information when created by the program.
+
 ---
 
-## How to Run
+# How to Run
 
-### 1. Install Python
+## 1. Install Python
 
 Make sure Python is installed on your computer.
 
-You can check by opening a terminal and running:
+Check your Python installation using:
 
 ```bash
 python --version
 ```
 
-### 2. Open the Project
+---
+
+## 2. Open the Project
 
 Open the project folder in your preferred Python editor.
 
@@ -595,7 +914,9 @@ Examples:
 * Visual Studio Code
 * IDLE
 
-### 3. Run the Program
+---
+
+## 3. Run the Program
 
 Run:
 
@@ -607,7 +928,7 @@ The Tic Tac Toe main menu should appear.
 
 ---
 
-## How a Game Works
+# How a Normal Game Works
 
 The basic game flow is:
 
@@ -642,14 +963,90 @@ Continue Until Game Ends
       ↓
 Update Scores
       ↓
-Display Statistics
+Update Statistics
+      ↓
+Check Achievements
+      ↓
+Check Challenges
+      ↓
+Save Game Center Data
+      ↓
+Display Results
       ↓
 Play Again or Return to Menu
 ```
 
 ---
 
-## Future Improvements
+# Game Center Flow
+
+The expanded systems follow a larger flow:
+
+```text
+                 GAME CENTER
+                      ↓
+        ┌─────────────┼─────────────┐
+        ↓             ↓             ↓
+ Achievements    Challenges    Match History
+        ↓             ↓             ↓
+        └─────────────┼─────────────┘
+                      ↓
+                 Statistics
+                      ↓
+                 Leaderboard
+                      ↓
+              Tournament Mode
+                      ↓
+               Saved Game Data
+```
+
+---
+
+# Learning Goals
+
+This project is designed to help practice Python programming through a real playable application.
+
+The original game demonstrates basic programming concepts while the expanded version introduces more advanced ideas.
+
+The project provides practice with:
+
+* Game development logic
+* Artificial intelligence
+* Algorithms
+* Recursion
+* Data structures
+* State management
+* Statistics
+* File handling
+* JSON data
+* Persistent information
+* Input validation
+* Game timers
+* Achievement systems
+* Tournament systems
+
+---
+
+# Why This Project Was Expanded
+
+The original goal of the project was to create a simple Tic Tac Toe game.
+
+As new features were added, the project evolved into a larger application that demonstrates how a simple Python game can be expanded with:
+
+* AI
+* Player statistics
+* Achievements
+* Challenges
+* Match records
+* Competitive systems
+* Persistent data
+* Tournaments
+
+The project therefore serves as both a playable game and a practical Python learning project.
+
+---
+
+# Future Improvements
 
 Possible future upgrades include:
 
@@ -657,51 +1054,35 @@ Possible future upgrades include:
 * Sound effects
 * Background music
 * Animated board
-* Save statistics to a file
-* Persistent leaderboard
-* Player profiles
-* Custom board sizes
+* Custom themes
+* Custom symbols
+* Larger board sizes
 * Online multiplayer
 * Network multiplayer
-* Tournament mode
-* Best-of-three mode
-* Best-of-five mode
-* More advanced AI
-* Difficulty customization
-* Game replay system
-* Match history
-* Custom symbols
-* Themes and colors
+* Player accounts
+* Cloud-based leaderboard
+* More AI personalities
+* More AI difficulty levels
+* Replay system
+* Full game replays
+* Custom challenges
+* More achievements
+* Player profiles
+* Statistics graphs
+* Game data export
+* Web version
+* Mobile version
 
 ---
 
-## Learning Goals
-
-This project is intended to help practice Python programming through a real playable application.
-
-The project demonstrates how simple programming concepts can be combined to create a more complete application.
-
-The expanded version also provides an introduction to:
-
-* Game development logic
-* Algorithms
-* Recursion
-* Artificial intelligence
-* Data structures
-* State management
-* Statistics
-* Input validation
-
----
-
-## Author
+# Author
 
 **Jose Navoa**
 
-A beginner Python project created as part of learning programming and developing practical programming projects.
+A beginner Python project created for learning programming, practicing Python concepts, and developing practical programming projects.
 
 ---
 
-## License
+# License
 
 This project is intended for educational and personal learning purposes.
