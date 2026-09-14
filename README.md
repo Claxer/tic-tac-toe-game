@@ -1,8 +1,8 @@
 # Tic Tac Toe
 
-A **Tic Tac Toe game built with Python**. This project started as a beginner-friendly terminal game and was expanded into a more complete Tic Tac Toe game system with computer difficulty levels, statistics, achievements, challenges, match history, tournaments, leaderboards, game timers, and a **Minimax-powered Hard AI**.
+A **Tic Tac Toe game built with Python**. This project started as a beginner-friendly terminal game and was expanded into a more complete Tic Tac Toe game system with computer difficulty levels, statistics, achievements, challenges, match history, tournaments, leaderboards, game timers, persistent data, and a **Minimax-powered Hard AI**.
 
-The project is designed to practice Python fundamentals while also introducing more advanced concepts such as **recursion, algorithms, game-state evaluation, file handling, JSON data storage, statistics tracking, and game management**.
+The project is designed to practice Python fundamentals while also introducing more advanced concepts such as **recursion, algorithms, game-state evaluation, file handling, JSON data storage, statistics tracking, persistent data, replay systems, and game management**.
 
 ---
 
@@ -22,7 +22,9 @@ If all nine spaces are filled and nobody gets three in a row, the game ends in a
 
 The game allows players to compete against another person or against a computer with multiple difficulty levels.
 
-The expanded version also includes a **Game Center** where players can view achievements, challenges, match history, leaderboards, advanced statistics, and tournament options.
+The expanded version also includes a **Game Center** where players can view achievements, challenges, match history, leaderboards, advanced statistics, tournament options, and saved game records.
+
+The project remains contained in **one Python file**, making it easy to run, understand, and study while still providing a large number of features.
 
 ---
 
@@ -244,7 +246,7 @@ Each move stores:
 
 The move history can be viewed during the game and is also displayed when a game ends.
 
-This allows players to review how the match was played.
+Move history is also used by the expanded Game Center to help record and review completed matches.
 
 ---
 
@@ -259,6 +261,8 @@ Winning positions: 1, 2, 3
 ```
 
 This makes it clear how the winning line was created.
+
+The winning-line information can also be used by the achievement and challenge systems to recognize special gameplay patterns.
 
 ---
 
@@ -285,6 +289,8 @@ Games Played: 6
 
 The game also calculates the percentage of games won by each player.
 
+The project also separates normal session scores from the expanded **Game Center lifetime records**.
+
 ---
 
 # Statistics
@@ -303,6 +309,8 @@ Statistics include:
 * Current win streaks
 * Best win streaks
 * Games quit
+
+Additional Game Center statistics can remain available between program sessions through saved JSON data.
 
 ---
 
@@ -329,6 +337,8 @@ Mark Best Streak:    2
 
 A player's current streak resets when the other player wins or when a draw occurs.
 
+The Game Center can also use streak progress when checking achievements and challenges.
+
 ---
 
 # Game Center
@@ -342,10 +352,13 @@ It includes:
 * Achievements
 * Challenges
 * Match History
+* Match Replay
 * Leaderboard
 * Tournament Mode
 * Advanced Statistics
-* Game performance records
+* Lifetime Statistics
+* Game Performance Records
+* Persistent Game Data
 
 The Game Center makes the project feel more like a complete game application instead of only a basic Tic Tac Toe program.
 
@@ -364,7 +377,10 @@ Examples include:
 * Building a win streak
 * Playing multiple games
 * Winning difficult matches
-* Completing special challenges
+* Completing special gameplay milestones
+* Reaching a specific number of total moves
+
+Achievements are tracked and saved so completed achievements can remain available after restarting the program.
 
 When an achievement is unlocked, the game displays a special notification.
 
@@ -391,8 +407,10 @@ Examples can include goals related to:
 * Winning games
 * Winning within a certain number of moves
 * Creating specific winning patterns
+* Using strategic board positions
 * Reaching certain milestones
 * Defeating difficult computer opponents
+* Building winning streaks
 
 Completed challenges are tracked by the Game Center.
 
@@ -405,6 +423,34 @@ Example:
 ```
 
 This gives players additional reasons to keep playing and experimenting with different strategies.
+
+---
+
+# Persistent Achievements and Challenges
+
+Unlike temporary game information, Game Center achievements and challenges can be stored in the JSON save file.
+
+This means the program can remember completed milestones between sessions.
+
+For example:
+
+```text
+Session 1
+    ↓
+Win 3 games
+    ↓
+Achievement unlocked
+    ↓
+Game Center saves progress
+    ↓
+Program closes
+    ↓
+Program opens again
+    ↓
+Achievement remains unlocked
+```
+
+This introduces the concept of **persistent application data**.
 
 ---
 
@@ -422,6 +468,8 @@ Match history can show information such as:
 * Number of moves
 * Difficulty when playing against the computer
 * Game duration
+* Date and time
+* Move history
 
 Example:
 
@@ -430,9 +478,29 @@ Game #1
 Jose vs Computer
 Result: Jose Wins
 Moves: 7
+Time: 18.42 seconds
 ```
 
 This allows players to review previous games.
+
+---
+
+# Match Replay
+
+The Game Center can use saved move history to recreate previous matches.
+
+A recorded match can be selected from the match history and reviewed move by move.
+
+The replay system demonstrates how stored game-state information can be used to recreate gameplay after the original game has ended.
+
+This feature also provides practice with:
+
+* Lists
+* Dictionaries
+* Game states
+* Loops
+* Stored data
+* Board reconstruction
 
 ---
 
@@ -470,6 +538,8 @@ Fastest Win: 12.45 seconds
 
 Players can attempt to beat their previous record.
 
+The record can be saved as part of the persistent Game Center data.
+
 ---
 
 # Longest Game
@@ -499,6 +569,20 @@ tic_tac_toe_data.json
 This allows selected Game Center information to remain available even after the program is closed.
 
 The program can load previously saved data when it starts and save updated information as the player progresses.
+
+The saved information can include:
+
+* Match history
+* Achievements
+* Completed challenges
+* Lifetime statistics
+* Win records
+* Streak records
+* Fastest win
+* Longest game
+* Game numbers
+
+The JSON file is created automatically by the program when needed.
 
 ---
 
@@ -534,7 +618,7 @@ Information can include:
 * Best streak
 * Total games
 
-This gives the game a more competitive feeling.
+The leaderboard uses recorded gameplay information to provide a simple comparison of player performance.
 
 ---
 
@@ -561,6 +645,8 @@ Player X is the Tournament Champion!
 
 Tournament Mode turns multiple individual games into one larger competition.
 
+Tournament games can also contribute to the game's broader game records and statistics.
+
 ---
 
 # Advanced Statistics
@@ -579,8 +665,32 @@ It can track:
 * Games quit
 * Fastest win
 * Longest game
+* Hard AI victories
+* Lifetime game progress
 
-This allows players to examine their overall performance.
+These statistics allow players to examine their overall performance.
+
+---
+
+# Lifetime Statistics
+
+The expanded Game Center separates long-term statistics from the current game session.
+
+Lifetime statistics can remain saved even after the program is closed.
+
+This allows the player to build a longer gameplay record over multiple sessions.
+
+Example:
+
+```text
+Lifetime Games:       25
+Lifetime Wins:        16
+Lifetime Draws:        4
+Lifetime Moves:      152
+Best Win Streak:       6
+Fastest Win:       11.82 sec
+Longest Game:          9 moves
+```
 
 ---
 
@@ -589,6 +699,8 @@ This allows players to examine their overall performance.
 The program keeps track of the round number while the game session is active.
 
 This helps organize multiple games during the same session.
+
+Completed games can also receive a unique Game Center game number for match history.
 
 ---
 
@@ -609,6 +721,8 @@ When confirmed, the program can reset information such as:
 * Round counter
 
 A confirmation is required before resetting the information.
+
+The normal score reset is separate from the saved Game Center data, allowing persistent records to be protected unless the user intentionally clears the saved Game Center information.
 
 ---
 
@@ -646,6 +760,19 @@ The original menu includes options such as:
 ```
 
 The expanded version also provides access to the additional Game Center systems.
+
+The Game Center provides access to features such as:
+
+```text
+Achievements
+Challenges
+Match History
+Replay Match
+Leaderboard
+Advanced Statistics
+Tournament Mode
+Saved Game Data
+```
 
 ---
 
@@ -694,7 +821,12 @@ The project demonstrates:
 * Statistics
 * File handling
 * JSON data storage
+* Persistent data
 * Game management
+* Replay logic
+* Achievement systems
+* Challenge systems
+* Tournament systems
 
 ---
 
@@ -728,6 +860,14 @@ board = [" " for _ in range(9)]
 
 Each index represents one position on the board.
 
+Lists are also used for:
+
+* Available moves
+* Winning combinations
+* Move history
+* Match records
+* Tournament information
+
 ---
 
 ## Dictionaries
@@ -744,6 +884,8 @@ scores = {
 }
 ```
 
+Dictionaries are also useful for organizing persistent Game Center information.
+
 ---
 
 ## Loops
@@ -757,6 +899,7 @@ Loops are used for:
 * Searching for winning combinations
 * Tournament games
 * Repeated challenges and game systems
+* Match replay
 
 ---
 
@@ -817,6 +960,18 @@ tic_tac_toe_data.json
 
 ---
 
+## Datetime
+
+The `datetime` module is used to record information about completed matches.
+
+This can be used to store the date and time when a game was played.
+
+```python
+import datetime
+```
+
+---
+
 ## Recursion
 
 The Hard AI uses recursion through the Minimax algorithm.
@@ -837,6 +992,7 @@ The project uses algorithms to determine:
 * Tournament results
 * Player statistics
 * Achievement progress
+* Challenge progress
 
 ---
 
@@ -854,6 +1010,35 @@ It prevents problems such as:
 
 ---
 
+## Persistent Data
+
+The expanded version introduces the concept of persistent data.
+
+Instead of keeping all information only in memory, important Game Center information can be written to a JSON file.
+
+This means data can survive after the program closes.
+
+---
+
+## Game-State Management
+
+The program constantly manages the current state of the game.
+
+The state can include:
+
+* Current board
+* Current player
+* Available positions
+* Move history
+* Game mode
+* AI difficulty
+* Game result
+* Statistics
+
+This is especially important for features such as **Undo, Replay, AI decision-making, achievements, and challenges**.
+
+---
+
 # Technologies Used
 
 * **Python**
@@ -861,6 +1046,7 @@ It prevents problems such as:
 * `random`
 * `time`
 * `json`
+* `datetime`
 
 No external Python packages are required.
 
@@ -868,14 +1054,15 @@ No external Python packages are required.
 
 # Project Structure
 
-The project can be kept as a simple Python project:
+The project is designed to remain simple and can be kept as a **single Python file**:
 
 ```text
 Tic Tac Toe/
 │
-├──python-version
-    ├── game.py
+├── python-version/
+│   └── main.py
 │
+├── tic_tac_toe_data.json
 ├── LICENSE
 └── README.md
 ```
@@ -887,6 +1074,8 @@ main.py
 ```
 
 The JSON file stores persistent Game Center information when created by the program.
+
+The JSON file does not need to be manually created before running the game because the program can create it automatically when saving Game Center data.
 
 ---
 
@@ -918,7 +1107,7 @@ Examples:
 
 ## 3. Run the Program
 
-Run:
+Open the `python-version` folder and run:
 
 ```bash
 python main.py
@@ -934,6 +1123,8 @@ The basic game flow is:
 
 ```text
 Start Program
+      ↓
+Load Saved Game Center Data
       ↓
 Main Menu
       ↓
@@ -969,6 +1160,10 @@ Check Achievements
       ↓
 Check Challenges
       ↓
+Record Match
+      ↓
+Update Game Center
+      ↓
 Save Game Center Data
       ↓
 Display Results
@@ -998,6 +1193,39 @@ The expanded systems follow a larger flow:
               Tournament Mode
                       ↓
                Saved Game Data
+                      ↓
+                  Replay
+```
+
+---
+
+# Complete Feature Flow
+
+The overall project can now be viewed as several connected systems:
+
+```text
+                    TIC TAC TOE
+                         │
+          ┌──────────────┴──────────────┐
+          ↓                             ↓
+      GAMEPLAY                      GAME CENTER
+          │                             │
+    ┌─────┼─────┐              ┌───────┼────────┐
+    ↓     ↓     ↓              ↓       ↓        ↓
+   PvP   PvC    AI       Achievements Challenges History
+                │                         │
+          ┌─────┼─────┐                  ↓
+          ↓     ↓     ↓              Replay
+        Easy Medium Hard                │
+                │                       ↓
+             Minimax               Statistics
+                                        │
+                         ┌──────────────┼──────────────┐
+                         ↓              ↓              ↓
+                    Leaderboard    Tournament      Records
+                                        │
+                                        ↓
+                                 JSON Save Data
 ```
 
 ---
@@ -1023,7 +1251,11 @@ The project provides practice with:
 * Input validation
 * Game timers
 * Achievement systems
+* Challenge systems
+* Match history
+* Replay systems
 * Tournament systems
+* Leaderboards
 
 ---
 
@@ -1038,11 +1270,16 @@ As new features were added, the project evolved into a larger application that d
 * Achievements
 * Challenges
 * Match records
+* Replay functionality
 * Competitive systems
 * Persistent data
 * Tournaments
+* Leaderboards
+* Performance tracking
 
 The project therefore serves as both a playable game and a practical Python learning project.
+
+The project also demonstrates how a beginner Python program can gradually grow into a more organized and feature-rich application while keeping the original game mechanics.
 
 ---
 
@@ -1063,7 +1300,6 @@ Possible future upgrades include:
 * Cloud-based leaderboard
 * More AI personalities
 * More AI difficulty levels
-* Replay system
 * Full game replays
 * Custom challenges
 * More achievements
