@@ -1,8 +1,8 @@
 # Tic Tac Toe
 
-A **Tic Tac Toe game built with Python**. This project started as a beginner-friendly terminal game and was expanded into a more complete Tic Tac Toe game system with computer difficulty levels, statistics, achievements, challenges, match history, tournaments, leaderboards, game timers, persistent data, and a **Minimax-powered Hard AI**.
+A **Tic Tac Toe game built with Python**. This project started as a beginner-friendly terminal game and was expanded into a more complete Tic Tac Toe game system with computer difficulty levels, statistics, achievements, challenges, match history, tournaments, leaderboards, game timers, persistent data, player profiles, XP and levels, training tools, replay systems, and a **Minimax-powered Hard AI**.
 
-The project is designed to practice Python fundamentals while also introducing more advanced concepts such as **recursion, algorithms, game-state evaluation, file handling, JSON data storage, statistics tracking, persistent data, replay systems, and game management**.
+The project is designed to practice Python fundamentals while also introducing more advanced concepts such as **recursion, algorithms, game-state evaluation, file handling, JSON data storage, statistics tracking, persistent data, replay systems, player progression, achievement systems, challenge systems, and game management**.
 
 ---
 
@@ -22,7 +22,7 @@ If all nine spaces are filled and nobody gets three in a row, the game ends in a
 
 The game allows players to compete against another person or against a computer with multiple difficulty levels.
 
-The expanded version also includes a **Game Center** where players can view achievements, challenges, match history, leaderboards, advanced statistics, tournament options, and saved game records.
+The expanded version also includes a **Game Center** where players can view achievements, challenges, match history, leaderboards, advanced statistics, tournament options, player progression, replayable matches, and saved game records.
 
 The project remains contained in **one Python file**, making it easy to run, understand, and study while still providing a large number of features.
 
@@ -36,6 +36,7 @@ The game supports:
 
 * **Player vs Player**
 * **Player vs Computer**
+* **Practice and Training Gameplay**
 
 ### Player vs Player
 
@@ -48,6 +49,12 @@ Each player can enter their own name and choose their moves.
 A player can compete against the computer.
 
 The computer has three different difficulty levels.
+
+### Practice and Training
+
+Additional gameplay tools can be used to practice moves and experiment with different strategies without focusing only on normal competitive matches.
+
+The training features also provide access to helpful move information and hints.
 
 ---
 
@@ -134,6 +141,68 @@ Player O
 
 ---
 
+# Player Profiles
+
+The expanded version introduces **Player Profiles** to keep track of individual player progress.
+
+A player profile can be used to organize information such as:
+
+* Player name
+* Wins
+* Losses
+* Draws
+* Total games
+* Win rate
+* Current streak
+* Best streak
+* Experience points
+* Player level
+* Achievement progress
+
+This gives each player a more complete record instead of only tracking the current session score.
+
+---
+
+# Player XP and Levels
+
+The Game Center includes a simple **XP and Level System**.
+
+Players can earn experience points by playing games and reaching gameplay milestones.
+
+XP can be used to track long-term progression.
+
+Example:
+
+```text
+Player: Jose
+Level: 4
+XP: 380
+```
+
+As players continue playing and completing achievements or challenges, their progress can increase.
+
+This introduces another game-management concept while still using simple Python data structures.
+
+---
+
+# Win, Loss, and Draw Records
+
+The expanded system keeps track of player results.
+
+Records can include:
+
+* Wins
+* Losses
+* Draws
+* Total games
+* Win percentage
+* Current streak
+* Best streak
+
+This allows players to see their overall performance instead of only seeing the current scoreboard.
+
+---
+
 # Position System
 
 The game uses numbers from **1 to 9** to represent the board.
@@ -208,6 +277,14 @@ Example:
 
 ---
 
+## Hint
+
+The expanded training system can provide a **move hint** to help the player understand possible strategic choices.
+
+The hint system can be used as a learning tool while practicing Tic Tac Toe.
+
+---
+
 ## Restart
 
 Enter:
@@ -247,6 +324,8 @@ Each move stores:
 The move history can be viewed during the game and is also displayed when a game ends.
 
 Move history is also used by the expanded Game Center to help record and review completed matches.
+
+Newly recorded matches can preserve their move information so they can be reviewed later through the replay system.
 
 ---
 
@@ -314,6 +393,49 @@ Additional Game Center statistics can remain available between program sessions 
 
 ---
 
+# Advanced Statistics
+
+The Game Center provides additional statistics beyond the original scoreboard.
+
+It can track:
+
+* Total games
+* Total wins
+* Total draws
+* Total moves
+* Average moves
+* Current streak
+* Best streak
+* Games quit
+* Fastest win
+* Longest game
+* Performance against computer difficulties
+* Lifetime game progress
+* Player progression
+
+These statistics allow players to examine their overall performance.
+
+---
+
+# AI Statistics
+
+The expanded version can track performance against the different computer difficulties.
+
+Statistics can include:
+
+* Easy games
+* Medium games
+* Hard games
+* Wins against Easy
+* Wins against Medium
+* Wins against Hard
+* Losses against each difficulty
+* Draws against each difficulty
+
+This provides a separate view of how the player performs against different AI levels.
+
+---
+
 # Win Streaks
 
 The game tracks consecutive wins.
@@ -349,16 +471,26 @@ The Game Center provides additional systems outside the normal game.
 
 It includes:
 
+* Player Profiles
+* XP and Levels
 * Achievements
 * Challenges
+* Daily Challenges
 * Match History
 * Match Replay
+* Match Search
+* Match Filters
 * Leaderboard
 * Tournament Mode
 * Advanced Statistics
+* AI Statistics
 * Lifetime Statistics
 * Game Performance Records
+* Training Tools
+* Hint System
+* Session Summaries
 * Persistent Game Data
+* Game Reports
 
 The Game Center makes the project feel more like a complete game application instead of only a basic Tic Tac Toe program.
 
@@ -379,6 +511,8 @@ Examples include:
 * Winning difficult matches
 * Completing special gameplay milestones
 * Reaching a specific number of total moves
+* Defeating difficult computer opponents
+* Reaching long-term progression milestones
 
 Achievements are tracked and saved so completed achievements can remain available after restarting the program.
 
@@ -393,6 +527,27 @@ Example:
 ```
 
 Achievements provide additional goals for players beyond simply winning individual matches.
+
+---
+
+# Expanded Achievements
+
+The achievement system can now support additional milestones.
+
+Examples include:
+
+* First Win
+* Multiple Wins
+* Long Win Streak
+* Play Multiple Games
+* Hard AI Victory
+* Fast Win
+* Special Winning Patterns
+* Move-Based Challenges
+* Long-Term Game Milestones
+* Total Game Milestones
+
+The system is designed so additional achievements can be added later without changing the basic game mechanics.
 
 ---
 
@@ -423,6 +578,34 @@ Example:
 ```
 
 This gives players additional reasons to keep playing and experimenting with different strategies.
+
+---
+
+# Daily Challenges
+
+The expanded Game Center also includes **Daily Challenge** style objectives.
+
+A challenge can give the player a specific goal to complete during gameplay.
+
+Examples:
+
+```text
+Win against Medium AI
+```
+
+```text
+Win in 6 moves or fewer
+```
+
+```text
+Create a diagonal winning line
+```
+
+```text
+Reach a winning streak
+```
+
+These challenges encourage players to use different strategies instead of always playing the same way.
 
 ---
 
@@ -485,11 +668,55 @@ This allows players to review previous games.
 
 ---
 
+# Match History Search
+
+The expanded Game Center adds the ability to search through recorded matches.
+
+Players can search or narrow match records using information such as:
+
+* Player name
+* Game number
+* Result
+* Game mode
+* Computer difficulty
+
+This makes it easier to find specific games when the match history becomes larger.
+
+---
+
+# Match History Filters
+
+Match history can also be organized into categories such as:
+
+* All games
+* Player vs Player
+* Player vs Computer
+* Wins
+* Draws
+* Easy AI
+* Medium AI
+* Hard AI
+
+This provides a simple way to analyze specific types of games.
+
+---
+
 # Match Replay
 
 The Game Center can use saved move history to recreate previous matches.
 
 A recorded match can be selected from the match history and reviewed move by move.
+
+The replay system rebuilds the board using the moves stored from the original match.
+
+This allows players to:
+
+* Review previous decisions
+* Study winning combinations
+* Review mistakes
+* See how the board developed
+* Study computer moves
+* Practice strategic thinking
 
 The replay system demonstrates how stored game-state information can be used to recreate gameplay after the original game has ended.
 
@@ -556,6 +783,47 @@ This can be useful for comparing different matches and seeing how long games typ
 
 ---
 
+# Session Summary
+
+The expanded version can provide a summary of the player's current session.
+
+The summary can include:
+
+* Games played
+* Wins
+* Draws
+* Total moves
+* Average moves
+* Current streak
+* Best streak
+* Games against the computer
+* Achievements completed
+* Challenges completed
+
+This gives the player a quick overview of their progress during a session.
+
+---
+
+# Game Reports
+
+The project can also provide a way to create a readable report from recorded Game Center information.
+
+A report can contain information such as:
+
+* Player records
+* Total games
+* Wins and draws
+* Statistics
+* Streaks
+* Achievements
+* Challenges
+* Match history
+* Performance records
+
+This demonstrates how Python can turn stored data into a useful summary for the player.
+
+---
+
 # Persistent Game Center Data
 
 The newest version can save Game Center information to a JSON file.
@@ -581,6 +849,9 @@ The saved information can include:
 * Fastest win
 * Longest game
 * Game numbers
+* Player progression
+* XP and level information
+* Other Game Center records
 
 The JSON file is created automatically by the program when needed.
 
@@ -617,6 +888,8 @@ Information can include:
 * Win rate
 * Best streak
 * Total games
+* Player level
+* XP progress
 
 The leaderboard uses recorded gameplay information to provide a simple comparison of player performance.
 
@@ -649,26 +922,45 @@ Tournament games can also contribute to the game's broader game records and stat
 
 ---
 
-# Advanced Statistics
+# Training Mode
 
-The Game Center provides additional statistics beyond the original scoreboard.
+The expanded project includes training-oriented features to help players practice the game.
 
-It can track:
+Training can be used to:
 
-* Total games
-* Total wins
-* Total draws
-* Total moves
-* Average moves
-* Current streak
-* Best streak
-* Games quit
-* Fastest win
-* Longest game
-* Hard AI victories
-* Lifetime game progress
+* Test different moves
+* Understand board positions
+* Practice against computer opponents
+* Review possible strategies
+* Use hints
+* Study move patterns
 
-These statistics allow players to examine their overall performance.
+This helps make the project useful as both a game and a learning tool.
+
+---
+
+# Advanced Statistics Dashboard
+
+The Game Center provides a central place for reviewing player performance.
+
+The statistics system can show:
+
+```text
+Total Games
+Total Wins
+Total Draws
+Total Moves
+Average Moves
+Current Streak
+Best Streak
+Fastest Win
+Longest Game
+AI Performance
+Player Level
+XP
+```
+
+This creates a broader view of the player's progress.
 
 ---
 
@@ -747,16 +1039,17 @@ The original menu includes options such as:
 
 ```text
 1. Start Game
-2. View Rules
-3. How To Play
+2. Game Center
+3. Tournament Mode
 4. View Scores
 5. View Statistics
-6. Change Player Names
-7. Reset Scores
-8. View Move Guide
-9. View About
-10. View Extended Statistics
-11. Exit
+6. View Rules
+7. How To Play
+8. Move Guide
+9. Change Player Names
+10. About Game
+11. Reset Session
+12. Exit
 ```
 
 The expanded version also provides access to the additional Game Center systems.
@@ -764,13 +1057,20 @@ The expanded version also provides access to the additional Game Center systems.
 The Game Center provides access to features such as:
 
 ```text
+Player Profiles
 Achievements
 Challenges
+Daily Challenges
 Match History
+Search and Filters
 Replay Match
 Leaderboard
-Advanced Statistics
 Tournament Mode
+Advanced Statistics
+AI Statistics
+Player XP and Levels
+Training Tools
+Game Reports
 Saved Game Data
 ```
 
@@ -827,6 +1127,12 @@ The project demonstrates:
 * Achievement systems
 * Challenge systems
 * Tournament systems
+* Leaderboards
+* Player progression
+* XP and levels
+* Search and filtering
+* Data organization
+* Training systems
 
 ---
 
@@ -867,6 +1173,8 @@ Lists are also used for:
 * Move history
 * Match records
 * Tournament information
+* Replay information
+* Challenges
 
 ---
 
@@ -884,7 +1192,7 @@ scores = {
 }
 ```
 
-Dictionaries are also useful for organizing persistent Game Center information.
+Dictionaries are also useful for organizing persistent Game Center information, player profiles, XP, levels, achievements, and match records.
 
 ---
 
@@ -900,6 +1208,7 @@ Loops are used for:
 * Tournament games
 * Repeated challenges and game systems
 * Match replay
+* Match history searching
 
 ---
 
@@ -917,6 +1226,8 @@ They determine:
 * Whether an achievement has been unlocked
 * Whether a challenge has been completed
 * Whether a tournament has ended
+* Which player should receive statistics
+* Which match records should be displayed
 
 ---
 
@@ -937,6 +1248,7 @@ The `time` module is used for:
 * Computer thinking delays
 * Game timing
 * Measuring game duration
+* Performance records
 
 ```python
 import time
@@ -993,6 +1305,9 @@ The project uses algorithms to determine:
 * Player statistics
 * Achievement progress
 * Challenge progress
+* Player progression
+* Match filtering
+* Replay states
 
 ---
 
@@ -1007,6 +1322,8 @@ It prevents problems such as:
 * Selecting positions outside 1–9
 * Selecting occupied spaces
 * Invalid commands
+* Invalid replay selections
+* Invalid search options
 
 ---
 
@@ -1034,8 +1351,10 @@ The state can include:
 * AI difficulty
 * Game result
 * Statistics
+* Replay information
+* Player progression
 
-This is especially important for features such as **Undo, Replay, AI decision-making, achievements, and challenges**.
+This is especially important for features such as **Undo, Replay, AI decision-making, achievements, challenges, and statistics**.
 
 ---
 
@@ -1156,6 +1475,8 @@ Update Scores
       ↓
 Update Statistics
       ↓
+Update XP and Player Progress
+      ↓
 Check Achievements
       ↓
 Check Challenges
@@ -1182,19 +1503,28 @@ The expanded systems follow a larger flow:
                       ↓
         ┌─────────────┼─────────────┐
         ↓             ↓             ↓
- Achievements    Challenges    Match History
+ Player Profile  Achievements  Challenges
         ↓             ↓             ↓
+     XP / Level   Challenge Progress
         └─────────────┼─────────────┘
+                      ↓
+                 Match History
+                      ↓
+              Search / Filtering
+                      ↓
+                   Replay
                       ↓
                  Statistics
                       ↓
-                 Leaderboard
+          ┌───────────┼───────────┐
+          ↓           ↓           ↓
+      Leaderboard  Tournament   Records
+          │           │           │
+          └───────────┼───────────┘
                       ↓
-              Tournament Mode
+               Persistent Data
                       ↓
-               Saved Game Data
-                      ↓
-                  Replay
+                JSON Save File
 ```
 
 ---
@@ -1210,20 +1540,30 @@ The overall project can now be viewed as several connected systems:
           ↓                             ↓
       GAMEPLAY                      GAME CENTER
           │                             │
-    ┌─────┼─────┐              ┌───────┼────────┐
-    ↓     ↓     ↓              ↓       ↓        ↓
-   PvP   PvC    AI       Achievements Challenges History
-                │                         │
-          ┌─────┼─────┐                  ↓
-          ↓     ↓     ↓              Replay
-        Easy Medium Hard                │
-                │                       ↓
-             Minimax               Statistics
+    ┌─────┼─────┐              ┌───────┼─────────────┐
+    ↓     ↓     ↓              ↓       ↓             ↓
+   PvP   PvC    AI        Profiles  Achievements  Challenges
+                │              │       │             │
+          ┌─────┼─────┐        ↓       ↓             ↓
+          ↓     ↓     ↓       XP     Progress      Daily Goals
+        Easy Medium Hard        │       │             │
+                │               └───────┼─────────────┘
+             Minimax                    ↓
+                                  Match History
+                                        │
+                               ┌────────┼────────┐
+                               ↓        ↓        ↓
+                            Search   Filter    Replay
+                               │        │        │
+                               └────────┼────────┘
+                                        ↓
+                                   Statistics
                                         │
                          ┌──────────────┼──────────────┐
                          ↓              ↓              ↓
                     Leaderboard    Tournament      Records
-                                        │
+                         │              │              │
+                         └──────────────┼──────────────┘
                                         ↓
                                  JSON Save Data
 ```
@@ -1252,10 +1592,17 @@ The project provides practice with:
 * Game timers
 * Achievement systems
 * Challenge systems
+* Daily challenges
 * Match history
+* Match searching
+* Match filtering
 * Replay systems
 * Tournament systems
 * Leaderboards
+* Player profiles
+* XP and levels
+* Training systems
+* Game reports
 
 ---
 
@@ -1267,15 +1614,20 @@ As new features were added, the project evolved into a larger application that d
 
 * AI
 * Player statistics
+* Player profiles
+* XP and levels
 * Achievements
 * Challenges
 * Match records
+* Search and filtering
 * Replay functionality
+* Training tools
 * Competitive systems
 * Persistent data
 * Tournaments
 * Leaderboards
 * Performance tracking
+* Session summaries
 
 The project therefore serves as both a playable game and a practical Python learning project.
 
@@ -1303,7 +1655,7 @@ Possible future upgrades include:
 * Full game replays
 * Custom challenges
 * More achievements
-* Player profiles
+* Player profiles with more customization
 * Statistics graphs
 * Game data export
 * Web version
