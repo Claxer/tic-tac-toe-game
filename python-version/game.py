@@ -2788,6 +2788,760 @@ def process_completed_game(
     )
 
 
+
+
+# ==========================================================
+# EXTRA GAME CENTER FEATURES
+# Added without removing the original features
+# ==========================================================
+
+def prepare_extra_data(data):
+
+    data.setdefault("profiles", {})
+    data.setdefault("xp", {})
+    data.setdefault("daily_challenge", {})
+    data.setdefault("extended_achievements", [])
+    data.setdefault("session_started", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+
+def get_profile(data, name):
+
+    prepare_extra_data(data)
+
+    if name not in data["profiles"]:
+        data["profiles"][name] = {
+            "games": 0,
+            "wins": 0,
+            "losses": 0,
+            "draws": 0,
+            "best_streak": 0,
+            "current_streak": 0,
+            "moves": 0,
+            "fastest_win": None
+        }
+
+    return data["profiles"][name]
+
+
+def add_player_xp(data, name, amount):
+
+    prepare_extra_data(data)
+
+    data["xp"].setdefault(name, 0)
+    old_level = data["xp"][name] // 500 + 1
+    data["xp"][name] += amount
+    new_level = data["xp"][name] // 500 + 1
+
+    if new_level > old_level:
+        print()
+        print(f"LEVEL UP! {name} reached Level {new_level}.")
+        print()
+
+
+def get_extended_achievements():
+
+    return [
+        ("games_10", "Getting Started", "Complete 10 games."),
+        ("games_25", "Regular Player", "Complete 25 games."),
+        ("games_50", "Dedicated Player", "Complete 50 games."),
+        ("wins_10", "Ten Wins", "Win 10 games."),
+        ("wins_25", "Winning Player", "Win 25 games."),
+        ("hard_3", "Hard Challenger", "Defeat Hard AI 3 times."),
+        ("fast_win", "Quick Win", "Win a game in 10 seconds or less."),
+        ("long_game", "Long Match", "Play a game lasting at least 9 moves."),
+        ("five_move_win", "Five Move Win", "Win a game in exactly 5 moves.")
+    ]
+
+
+def check_extended_achievements(data, game, mode, difficulty):
+
+    prepare_extra_data(data)
+
+    history = data.get("match_history", [])
+    games = len(history)
+    wins = sum(1 for match in history if match.get("symbol") in ("X", "O"))
+    hard_wins = sum(
+        1 for match in history
+        if match.get("difficulty") == "Hard"
+        and match.get("symbol") == "X"
+    )
+
+    checks = {
+        "games_10": games >= 10,
+        "games_25": games >= 25,
+        "games_50": games >= 50,
+        "wins_10": wins >= 10,
+        "wins_25": wins >= 25,
+        "hard_3": hard_wins >= 3,
+        "fast_win": game.get("result") in ("X", "O") and game.get("time", 999) <= 10,
+        "long_game": game.get("moves", 0) >= 9,
+        "five_move_win": game.get("result") in ("X", "O") and game.get("moves") == 5
+    }
+
+    unlocked = set(data["extended_achievements"])
+
+    for code, passed in checks.items():
+        if passed and code not in unlocked:
+            data["extended_achievements"].append(code)
+            for achievement in get_extended_achievements():
+                if achievement[0] == code:
+                    print()
+                    print(f"NEW ACHIEVEMENT: {achievement[1]}")
+                    print(achievement[2])
+                    print()
+                    break
+
+
+def update_extra_profile_data(data, player_x, player_o, game, mode, difficulty):
+
+    prepare_extra_data(data)
+
+    result = game.get("result")
+
+    if result not in ("X", "O", "Draw"):
+        return
+
+    players = {"X": player_x, "O": player_o}
+
+    for symbol, name in players.items():
+
+        if mode == "PvC" and symbol == "O":
+            continue
+
+        profile = get_profile(data, name)
+        profile["games"] += 1
+        profile["moves"] += game.get("moves", 0)
+
+        if result == "Draw":
+            profile["draws"] += 1
+            profile["current_streak"] = 0
+            add_player_xp(data, name, 40)
+
+        elif result == symbol:
+            profile["wins"] += 1
+            profile["current_streak"] += 1
+            profile["best_streak"] = max(profile["best_streak"], profile["current_streak"])
+
+            if profile["fastest_win"] is None or game.get("time", 999999) < profile["fastest_win"]:
+                profile["fastest_win"] = round(game.get("time", 0), 2)
+
+            xp = 100
+            if mode == "PvC" and difficulty == "Medium":
+                xp += 25
+            elif mode == "PvC" and difficulty == "Hard":
+                xp += 50
+            add_player_xp(data, name, xp)
+
+        else:
+            profile["losses"] += 1
+            profile["current_streak"] = 0
+            add_player_xp(data, name, 20)
+
+
+def update_daily_challenge(data, game, mode, difficulty):
+
+    prepare_extra_data(data)
+
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    if data["daily_challenge"].get("date") != today:
+        challenges = [
+            {"name": "Play One Game", "description": "Complete one game today.", "type": "play"},
+            {"name": "Get a Win", "description": "Win one game today.", "type": "win"},
+            {"name": "Play 5 Moves", "description": "Complete a game with at least 5 moves.", "type": "moves"},
+            {"name": "Beat Medium AI", "description": "Defeat the Medium computer.", "type": "medium"},
+            {"name": "Beat Hard AI", "description": "Defeat the Hard computer.", "type": "hard"}
+        ]
+
+        challenge = random.choice(challenges)
+        data["daily_challenge"] = {
+            "date": today,
+            "name": challenge["name"],
+            "description": challenge["description"],
+            "type": challenge["type"],
+            "completed": False
+        }
+
+    challenge = data["daily_challenge"]
+
+    if challenge.get("completed"):
+        return
+
+    completed = False
+
+    if challenge["type"] == "play":
+        completed = True
+    elif challenge["type"] == "win":
+        completed = game.get("result") in ("X", "O")
+    elif challenge["type"] == "moves":
+        completed = game.get("moves", 0) >= 5
+    elif challenge["type"] == "medium":
+        completed = mode == "PvC" and difficulty == "Medium" and game.get("result") == "X"
+    elif challenge["type"] == "hard":
+        completed = mode == "PvC" and difficulty == "Hard" and game.get("result") == "X"
+
+    if completed:
+        challenge["completed"] = True
+        print()
+        print("DAILY CHALLENGE COMPLETED!")
+        print(f"{challenge['name']}: {challenge['description']}")
+        print()
+
+
+def display_player_profiles(data):
+
+    prepare_extra_data(data)
+
+    print()
+    print("=" * 75)
+    print("                       PLAYER PROFILES")
+    print("=" * 75)
+
+    if not data["profiles"]:
+        print("No player profiles yet.")
+    else:
+        for name, profile in data["profiles"].items():
+            xp = data["xp"].get(name, 0)
+            level = xp // 500 + 1
+            games = profile["games"]
+            win_rate = (profile["wins"] / games * 100) if games else 0
+
+            print()
+            print(f"Player: {name}")
+            print(f"Level: {level}")
+            print(f"XP: {xp}")
+            print(f"Games: {games}")
+            print(f"Wins: {profile['wins']}")
+            print(f"Losses: {profile['losses']}")
+            print(f"Draws: {profile['draws']}")
+            print(f"Win Rate: {win_rate:.1f}%")
+            print(f"Current Streak: {profile['current_streak']}")
+            print(f"Best Streak: {profile['best_streak']}")
+            print(f"Total Moves: {profile['moves']}")
+            print(f"Fastest Win: {profile['fastest_win'] if profile['fastest_win'] is not None else 'None'}")
+
+    print()
+    print("=" * 75)
+    print()
+
+
+def display_daily_challenge(data):
+
+    prepare_extra_data(data)
+    update_daily_challenge(data, {"result": "Draw", "moves": 0}, "PvP", None)
+
+    challenge = data["daily_challenge"]
+
+    print()
+    print("=" * 75)
+    print("                       DAILY CHALLENGE")
+    print("=" * 75)
+    print()
+    print(f"Challenge: {challenge['name']}")
+    print(f"Goal: {challenge['description']}")
+    print(f"Status: {'COMPLETED' if challenge['completed'] else 'NOT COMPLETED'}")
+    print(f"Date: {challenge['date']}")
+    print()
+    print("=" * 75)
+    print()
+
+
+def display_advanced_statistics(data):
+
+    prepare_extra_data(data)
+    history = data.get("match_history", [])
+
+    print()
+    print("=" * 75)
+    print("                    ADVANCED STATISTICS")
+    print("=" * 75)
+
+    if not history:
+        print("No completed games yet.")
+        print("=" * 75)
+        print()
+        return
+
+    total = len(history)
+    average_moves = sum(m.get("moves", 0) for m in history) / total
+    average_time = sum(m.get("time", 0) for m in history) / total
+    fastest = min(history, key=lambda m: m.get("time", 999999))
+    longest = max(history, key=lambda m: m.get("moves", 0))
+    shortest = min(history, key=lambda m: m.get("moves", 999999))
+
+    print(f"Completed Games: {total}")
+    print(f"Average Moves: {average_moves:.2f}")
+    print(f"Average Game Time: {average_time:.2f} seconds")
+    print(f"Fastest Game: #{fastest.get('game_number')} - {fastest.get('time')} seconds")
+    print(f"Longest Game: #{longest.get('game_number')} - {longest.get('moves')} moves")
+    print(f"Fewest Moves: #{shortest.get('game_number')} - {shortest.get('moves')} moves")
+
+    mode_counts = {}
+    difficulty_counts = {}
+
+    for match in history:
+        mode = match.get("mode", "Unknown")
+        mode_counts[mode] = mode_counts.get(mode, 0) + 1
+
+        difficulty = match.get("difficulty")
+        if difficulty:
+            difficulty_counts[difficulty] = difficulty_counts.get(difficulty, 0) + 1
+
+    print()
+    print("Games by Mode:")
+    for mode, count in mode_counts.items():
+        print(f"- {mode}: {count}")
+
+    print()
+    print("Games by AI Difficulty:")
+    if difficulty_counts:
+        for difficulty, count in difficulty_counts.items():
+            print(f"- {difficulty}: {count}")
+    else:
+        print("- No computer games yet.")
+
+    print()
+    print("=" * 75)
+    print()
+
+
+def display_ai_statistics(data):
+
+    history = data.get("match_history", [])
+
+    print()
+    print("=" * 75)
+    print("                        AI STATISTICS")
+    print("=" * 75)
+
+    for difficulty in ["Easy", "Medium", "Hard"]:
+        games = [m for m in history if m.get("difficulty") == difficulty]
+        wins = sum(1 for m in games if m.get("symbol") == "X")
+        losses = sum(1 for m in games if m.get("symbol") == "O")
+        draws = sum(1 for m in games if m.get("symbol") == "Draw")
+
+        print()
+        print(difficulty)
+        print("-" * 40)
+        print(f"Games: {len(games)}")
+        print(f"Player Wins: {wins}")
+        print(f"Computer Wins: {losses}")
+        print(f"Draws: {draws}")
+
+    print()
+    print("=" * 75)
+    print()
+
+
+def search_match_history(data):
+
+    history = data.get("match_history", [])
+
+    print()
+    print("=" * 75)
+    print("                    SEARCH MATCH HISTORY")
+    print("=" * 75)
+
+    if not history:
+        print("No match history available.")
+        return
+
+    query = input("Search player, result, mode, or game number: ").strip().lower()
+
+    if not query:
+        print("Search cancelled.")
+        return
+
+    found = []
+
+    for match in history:
+        values = [
+            str(match.get("game_number", "")),
+            str(match.get("player_x", "")),
+            str(match.get("player_o", "")),
+            str(match.get("result", "")),
+            str(match.get("mode", "")),
+            str(match.get("difficulty", ""))
+        ]
+
+        if any(query in value.lower() for value in values):
+            found.append(match)
+
+    print()
+
+    if not found:
+        print("No matching games found.")
+    else:
+        print(f"Found {len(found)} match(es).")
+        for match in found:
+            print()
+            print(f"Game #{match.get('game_number')}")
+            print(f"{match.get('player_x')} vs {match.get('player_o')}")
+            print(f"Mode: {match.get('mode')}")
+            print(f"Result: {match.get('result')}")
+            print(f"Moves: {match.get('moves')}")
+            print(f"Time: {match.get('time')}s")
+            print(f"Date: {match.get('date')}")
+
+    print()
+    print("=" * 75)
+    print()
+
+
+def replay_match(data):
+
+    history = data.get("match_history", [])
+
+    print()
+    print("=" * 75)
+    print("                         GAME REPLAY")
+    print("=" * 75)
+
+    replays = [m for m in history if m.get("history")]
+
+    if not replays:
+        print("No replay data is available yet.")
+        print("New games played after this update will be saved for replay.")
+        return
+
+    for match in replays[-10:]:
+        print(f"Game #{match.get('game_number')} - {match.get('player_x')} vs {match.get('player_o')}")
+
+    choice = input("Enter game number to replay: ").strip()
+
+    selected = None
+    for match in replays:
+        if str(match.get("game_number")) == choice:
+            selected = match
+            break
+
+    if selected is None:
+        print("Game not found.")
+        return
+
+    board = create_board()
+
+    print()
+    print(f"Replaying Game #{selected.get('game_number')}")
+    print()
+
+    for index, move in enumerate(selected.get("history", []), start=1):
+        position = move.get("position")
+        symbol = move.get("symbol")
+
+        if position and symbol:
+            board[position - 1] = symbol
+
+        print(f"Move {index}: {move.get('player')} placed {symbol} at position {position}")
+        display_board(board)
+
+        if index < len(selected.get("history", [])):
+            input("Press Enter for next move...")
+
+    print("Replay finished.")
+
+
+def export_game_report(data):
+
+    filename = "tic_tac_toe_report.txt"
+    history = data.get("match_history", [])
+
+    with open(filename, "w", encoding="utf-8") as file:
+        file.write("TIC TAC TOE - GAME CENTER REPORT\n")
+        file.write("=" * 60 + "\n\n")
+        file.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+        file.write(f"Lifetime Games: {data.get('lifetime_games', 0)}\n")
+        file.write(f"X Wins: {data.get('lifetime_wins_x', 0)}\n")
+        file.write(f"O Wins: {data.get('lifetime_wins_o', 0)}\n")
+        file.write(f"Draws: {data.get('lifetime_draws', 0)}\n")
+        file.write(f"Total Moves: {data.get('total_moves', 0)}\n")
+        file.write(f"Total Play Time: {data.get('total_play_time', 0):.2f} seconds\n\n")
+
+        file.write("PLAYER PROFILES\n")
+        file.write("-" * 60 + "\n")
+
+        for name, profile in data.get("profiles", {}).items():
+            xp = data.get("xp", {}).get(name, 0)
+            level = xp // 500 + 1
+            file.write(f"{name} - Level {level}, XP {xp}, Wins {profile['wins']}, Losses {profile['losses']}, Draws {profile['draws']}\n")
+
+        file.write("\nMATCH HISTORY\n")
+        file.write("-" * 60 + "\n")
+
+        for match in history:
+            file.write(
+                f"Game #{match.get('game_number')}: "
+                f"{match.get('player_x')} vs {match.get('player_o')} | "
+                f"{match.get('result')} | {match.get('moves')} moves | "
+                f"{match.get('time')}s | {match.get('date')}\n"
+            )
+
+    print()
+    print(f"Report exported successfully to {filename}.")
+    print()
+
+
+def training_mode():
+
+    print()
+    print("=" * 75)
+    print("                       TRAINING MODE")
+    print("=" * 75)
+    print("Practice without changing your saved statistics.")
+    print()
+
+    board = create_board()
+    symbol = "X"
+
+    while True:
+        display_board(board)
+
+        if check_winner(board, symbol) or is_board_full(board):
+            break
+
+        available = get_available_moves(board)
+
+        if not available:
+            break
+
+        print(f"Available positions: {', '.join(map(str, available))}")
+        choice = input("Choose a move or H for a hint, Q to leave: ").strip().upper()
+
+        if choice == "Q":
+            break
+
+        if choice == "H":
+            hint = hard_computer_move(board, "X", "O")
+            if hint:
+                print(f"Hint: position {hint} is a strong move.")
+            continue
+
+        if not choice.isdigit() or int(choice) not in available:
+            print("Invalid move.")
+            continue
+
+        make_move(board, int(choice), symbol)
+        symbol = "O" if symbol == "X" else "X"
+
+    display_board(board)
+    print("Training mode finished. No statistics were changed.")
+    print()
+
+
+def display_session_summary(player_x, player_o, scores, statistics, data):
+
+    prepare_extra_data(data)
+
+    print()
+    print("=" * 75)
+    print("                       SESSION SUMMARY")
+    print("=" * 75)
+    print()
+    print(f"Players: {player_x} vs {player_o}")
+    print(f"Session X Wins: {scores.get('X', 0)}")
+    print(f"Session O Wins: {scores.get('O', 0)}")
+    print(f"Session Draws: {scores.get('Draws', 0)}")
+    print(f"Session Total Moves: {statistics.get('total_moves', 0)}")
+    print(f"Games Quit: {statistics.get('games_quit', 0)}")
+    print(f"Saved Lifetime Games: {data.get('lifetime_games', 0)}")
+    print(f"Achievements Unlocked: {len(data.get('achievements', [])) + len(data.get('extended_achievements', []))}")
+    print()
+    print("=" * 75)
+    print()
+
+
+def display_extended_achievements(data):
+
+    prepare_extra_data(data)
+    unlocked = set(data["extended_achievements"])
+
+    print()
+    print("=" * 75)
+    print("                  EXTRA ACHIEVEMENTS")
+    print("=" * 75)
+
+    for code, name, description in get_extended_achievements():
+        status = "[UNLOCKED]" if code in unlocked else "[LOCKED]  "
+        print()
+        print(f"{status} {name}")
+        print(f"          {description}")
+
+    print()
+    print(f"Unlocked: {len(unlocked)}/{len(get_extended_achievements())}")
+    print("=" * 75)
+    print()
+
+
+# ----------------------------------------------------------
+# Add the new tracking to the original completed-game process
+# ----------------------------------------------------------
+
+_original_process_completed_game = process_completed_game
+
+def process_completed_game(
+    game,
+    player_x,
+    player_o,
+    mode,
+    difficulty,
+    scores,
+    statistics,
+    data
+):
+
+    _original_process_completed_game(
+        game,
+        player_x,
+        player_o,
+        mode,
+        difficulty,
+        scores,
+        statistics,
+        data
+    )
+
+    if game.get("result") not in ("X", "O", "Draw"):
+        return
+
+    prepare_extra_data(data)
+
+    update_extra_profile_data(
+        data,
+        player_x,
+        player_o,
+        game,
+        mode,
+        difficulty
+    )
+
+    update_daily_challenge(
+        data,
+        game,
+        mode,
+        difficulty
+    )
+
+    check_extended_achievements(
+        data,
+        game,
+        mode,
+        difficulty
+    )
+
+    # Add move history to the most recent saved match for replay.
+    if data.get("match_history"):
+        data["match_history"][-1]["history"] = game.get("history", [])
+
+    save_game_data(data)
+
+
+# ----------------------------------------------------------
+# Extended Game Center menu
+# ----------------------------------------------------------
+
+def game_center_menu():
+
+    print()
+    print("=" * 75)
+    print("                      GAME CENTER")
+    print("=" * 75)
+
+    print("1. Achievements")
+    print("2. Challenges")
+    print("3. Match History")
+    print("4. Leaderboard")
+    print("5. Game Center Statistics")
+    print("6. Tournament Mode")
+    print("7. Reset All Saved Data")
+    print("8. Player Profiles")
+    print("9. Daily Challenge")
+    print("10. Advanced Statistics")
+    print("11. AI Statistics")
+    print("12. Search Match History")
+    print("13. Game Replay")
+    print("14. Export Game Report")
+    print("15. Training Mode")
+    print("16. Session Summary")
+    print("17. Extra Achievements")
+    print("18. Back")
+
+    print("=" * 75)
+
+
+def game_center(
+    player_x,
+    player_o,
+    scores,
+    statistics,
+    data
+):
+
+    prepare_extra_data(data)
+
+    while True:
+
+        game_center_menu()
+        choice = input("> ").strip()
+
+        if choice == "1":
+            display_achievements(data)
+
+        elif choice == "2":
+            display_challenges(data)
+
+        elif choice == "3":
+            display_match_history(data)
+
+        elif choice == "4":
+            display_leaderboard(player_x, player_o, scores, statistics)
+
+        elif choice == "5":
+            display_game_center_stats(player_x, player_o, scores, statistics, data)
+
+        elif choice == "6":
+            run_tournament(player_x, player_o)
+
+        elif choice == "7":
+            reset_all_data(data)
+
+        elif choice == "8":
+            display_player_profiles(data)
+
+        elif choice == "9":
+            display_daily_challenge(data)
+
+        elif choice == "10":
+            display_advanced_statistics(data)
+
+        elif choice == "11":
+            display_ai_statistics(data)
+
+        elif choice == "12":
+            search_match_history(data)
+
+        elif choice == "13":
+            replay_match(data)
+
+        elif choice == "14":
+            export_game_report(data)
+
+        elif choice == "15":
+            training_mode()
+
+        elif choice == "16":
+            display_session_summary(player_x, player_o, scores, statistics, data)
+
+        elif choice == "17":
+            display_extended_achievements(data)
+
+        elif choice == "18":
+            save_game_data(data)
+            return
+
+        else:
+            print("Invalid option.")
+
+
 # ==========================================================
 # MAIN MENU
 # ==========================================================
